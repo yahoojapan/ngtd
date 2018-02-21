@@ -33,43 +33,6 @@ GLOBAL OPTIONS:
    --version, -v  print the version
 ```
 
-## Build
-```
-$ ngtd build --help
-NAME:
-   ngtd build - build ngtd index
-
-USAGE:
-   ngtd build [command options] [arguments...]
-
-OPTIONS:
-   --index value, -i value                 path to index (default: "/usr/share/ngtd/index")
-   --dimension value, -d value             vector dimension size.(Must set if create new index) (default: -1)
-   --database-type value, -t value         ngtd inner kvs type(redis, golevel, bolt or sqlite)
-   --database-path value, -p value         ngtd inner kvs path(for golevel, bolt and sqlite) (default: "/usr/share/ngtd/db/kvs.db")
-   --redis-host value                      redis running host (default: "localhost")
-   --redis-port value                      redis running port (default: "6379")
-   --redis-password value                  redis password
-   --redis-database-index value, -I value  list up 2 redis database indexes (default: 0, 1)
-   --text-delimiter value, -D value        delimiter for text input (default: "\t", " ")
-   --pool value                            number of CPU using NGT indexing (default: 8)
-   --parallel-parse value                  number of CPU using input parser (default: 8)
-```
-
-### input format
-Now, we support only text format.
-
-It enables for id to use any character without delimiter1 and for vector elements to use decimal/hex format.
-
-If you choice hex format, you must begin the value with "0x".
-```
-<id1><delimiter1><v11><delimiter2><v12><delimiter2>...<delimiter2><v1d>\n
-<id2><delimiter1><v21><delimiter2><v22><delimiter2>...<delimiter2><v2d>\n
-...
-<id1><delimiter1><vn1><delimiter2><vn2><delimiter2>...<delimiter2><vnd>\n
-```
-
-
 ## Serve
 ngtd supports http and gRPC protocol.
 ### HTTP
@@ -121,12 +84,47 @@ OPTIONS:
    --port value, -P value                  listening port (default: 8200)
 ```
 
-#### client
+#### Client
 If you use language except golang, compile [proto file](proto/ngtd.proto) for the language.
 
 Go examples are in [example/](example/).
 
-#### Request
+## Build
+Build will construct the NGT database by importing the Vector data, please check the Input Format section at the bottom of the Build chapter for the file format to import.
+```
+$ ngtd build --help
+NAME:
+   ngtd build - build ngtd index
+
+USAGE:
+   ngtd build [command options] [arguments...]
+
+OPTIONS:
+   --index value, -i value                 path to index (default: "/usr/share/ngtd/index")
+   --dimension value, -d value             vector dimension size.(Must set if create new index) (default: -1)
+   --database-type value, -t value         ngtd inner kvs type(redis, golevel, bolt or sqlite)
+   --database-path value, -p value         ngtd inner kvs path(for golevel, bolt and sqlite) (default: "/usr/share/ngtd/db/kvs.db")
+   --redis-host value                      redis running host (default: "localhost")
+   --redis-port value                      redis running port (default: "6379")
+   --redis-password value                  redis password
+   --redis-database-index value, -I value  list up 2 redis database indexes (default: 0, 1)
+   --text-delimiter value, -D value        delimiter for text input (default: "\t", " ")
+   --pool value                            number of CPU using NGT indexing (default: 8)
+   --parallel-parse value                  number of CPU using input parser (default: 8)
+```
+
+### Input format
+Now, we support only text format.
+
+It enables for id to use any character without delimiter1 and for vector elements to use decimal/hex format.
+
+If you choice hex format, you must begin the value with "0x".
+```
+<id1><delimiter1><v11><delimiter2><v12><delimiter2>...<delimiter2><v1d>\n
+<id2><delimiter1><v21><delimiter2><v22><delimiter2>...<delimiter2><v2d>\n
+...
+<id1><delimiter1><vn1><delimiter2><vn2><delimiter2>...<delimiter2><vnd>\n
+```
 
 License
 -------
