@@ -1,0 +1,81 @@
+//
+// Copyright (C) 2018 Yahoo Japan Corporation
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+syntax = "proto3";
+
+package ngtd;
+
+message Empty {}
+
+message SearchRequest {
+  repeated double vector = 1;
+  bytes id = 2;
+  int32 size = 10;
+  float epsilon = 11;
+}
+
+message ObjectDistance {
+  bytes id = 1;
+  float distance = 10;
+  string error = 99;
+}
+
+message SearchResponse {
+  repeated ObjectDistance result = 1;
+  string error = 99;
+}
+
+message InsertRequest {
+  repeated double vector = 1;
+  bytes id = 2;
+}
+
+message InsertResponse {
+  string error = 99;
+}
+
+message RemoveRequest {
+  bytes id = 1;
+}
+
+message RemoveResponse {
+  string error = 99;
+}
+
+message CreateIndexRequest {
+  uint32 pool_size = 1;
+}
+
+message GetDimensionResponse {
+  int32 dimension = 1;
+}
+
+service NGTD {
+  rpc Search (SearchRequest) returns (SearchResponse) {}
+  rpc SearchByID (SearchRequest) returns (SearchResponse) {}
+  rpc StreamSearch (stream SearchRequest) returns (stream SearchResponse) {}
+  rpc StreamSearchByID (stream SearchRequest) returns (stream SearchResponse) {}
+  
+  rpc Insert (InsertRequest) returns (InsertResponse) {}
+  rpc StreamInsert (stream InsertRequest) returns (stream InsertResponse) {}
+
+  rpc Remove (RemoveRequest) returns (RemoveResponse) {}
+  rpc StreamRemove (stream RemoveRequest) returns (stream RemoveResponse) {}
+ 
+  rpc CreateIndex (CreateIndexRequest) returns (Empty) {}
+  rpc SaveIndex (Empty) returns (Empty) {}
+  rpc GetDimension (Empty) returns (GetDimensionResponse) {}
+}
