@@ -29,7 +29,7 @@ import (
 	"github.com/yahoojapan/ngtd"
 	"github.com/yahoojapan/ngtd/cmd/ngtd/build"
 	"github.com/yahoojapan/ngtd/kvs"
-	"gopkg.in/urfave/cli.v1"
+	cli "gopkg.in/urfave/cli.v1"
 )
 
 var (
@@ -205,5 +205,7 @@ func main() {
 		},
 	}
 
-	app.Run(os.Args)
+	if err := app.Run(os.Args); err != nil {
+		glg.Fatal(err)
+	}
 }
