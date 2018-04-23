@@ -37,10 +37,13 @@ RUN curl -sSL "https://github.com/yahoojapan/NGT/archive/v${NGT_VERSION}.zip" -o
     && cd .. \
     && rm -rf NGT.zip NGT-${NGT_VERSION}
 
-RUN go get -v -u github.com/golang/dep/cmd/dep \
-    && dep ensure
+RUN go get -v -u github.com/yahoojapan/ngtd
 
 WORKDIR ${GOPATH}/src/github.com/yahoojapan/ngtd/cmd/ngtd
+
+RUN go get -v -u github.com/golang/dep/cmd/dep \
+    && ${GOPATH}/bin/dep ensure
+
 
 RUN CGO_ENABLED=1 \
     CGO_CXXFLAGS="-g -Ofast -march=native" \

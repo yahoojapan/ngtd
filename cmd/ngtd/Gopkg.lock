@@ -91,6 +91,20 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/yahoojapan/ngtd"
+  packages = [
+    ".",
+    "handler",
+    "kvs",
+    "model",
+    "proto",
+    "router",
+    "service"
+  ]
+  revision = "b2f3b62237433d93a7536b2864f48204f4604643"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -176,6 +190,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "0415c6a33a19983459117fb7784729c6244b6f2539cf042bffc5ea9a68d2e824"
+  inputs-digest = "fac26eee89199127972eeffa028c3229ec0977a02a611df69be29015021aba28"
   solver-name = "gps-cdcl"
   solver-version = 1

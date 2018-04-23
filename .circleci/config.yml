@@ -37,6 +37,7 @@ jobs:
           name: build
           command: |
             mkdir -p $TEST_RESULTS
+            cp ./cmd/ngtd/Gopkg.* ./
             dep ensure
             go build -ldflags="-s -w" -v
       - run:
