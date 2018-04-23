@@ -1,5 +1,6 @@
 bin/
 vendor/
+_vendor*
 
 # IntelliJ
 .idea/
@@ -34,3 +35,4 @@ _testmain.go
 *.exe
 *.test
 *.prof
+

@@ -37,9 +37,8 @@ RUN curl -sSL "https://github.com/yahoojapan/NGT/archive/v${NGT_VERSION}.zip" -o
     && cd .. \
     && rm -rf NGT.zip NGT-${NGT_VERSION}
 
-RUN go get -v -u github.com/yahoojapan/ngtd \
-    && go get -v -u github.com/mattn/go-sqlite3 \
-    && go get -v -u gopkg.in/urfave/cli.v1
+RUN go get -v -u github.com/golang/dep/cmd/dep \
+    && dep ensure
 
 WORKDIR ${GOPATH}/src/github.com/yahoojapan/ngtd/cmd/ngtd
 
