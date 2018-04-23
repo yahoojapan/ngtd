@@ -63,7 +63,7 @@
 
 [[constraint]]
   name = "google.golang.org/grpc"
-  version = "1.11.2"
+  version = "1.11.3"
 
 [[constraint]]
   name = "gopkg.in/urfave/cli.v1"
