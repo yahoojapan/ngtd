@@ -1,13 +1,30 @@
 # NGTD: Serving [NGT](https://github.com/yahoojapan/NGT) over HTTP or gRPC. [![License: Apache](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![release](https://img.shields.io/github/release/yahoojapan/ngtd.svg)](https://github.com/yahoojapan/ngtd/releases/latest) [![CircleCI](https://circleci.com/gh/yahoojapan/ngtd.svg?style=shield)](https://circleci.com/gh/yahoojapan/ngtd) [![codecov](https://codecov.io/gh/yahoojapan/ngtd/branch/master/graph/badge.svg)](https://codecov.io/gh/yahoojapan/ngtd) [![Go Report Card](https://goreportcard.com/badge/github.com/yahoojapan/ngtd)](https://goreportcard.com/report/github.com/yahoojapan/ngtd) [![GoDoc](http://godoc.org/github.com/yahoojapan/ngtd?status.svg)](http://godoc.org/github.com/yahoojapan/ngtd) [![Join the chat at https://gitter.im/yahoojapan/ngtd](https://badges.gitter.im/yahoojapan/ngtd.svg)](https://gitter.im/yahoojapan/ngtd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+Description
+-----------
+NGTD provides serving function for [NGT](https://github.com/yahoojapan/NGT).
+
+NGTD supports gRPC and HTTP protocol, so you can implement applications with your favorite programming language.
+
+You can set any labels for each vectors, and enable to search with the label.
+
 Install
 -------
 You must install [NGT](https://github.com/yahoojapan/NGT) before installing ngtd.
 
 The easiest way to install is the following command:
 ```
-$ go get github.com/yahoojapan/ngtd/cmd/ngtd
+$ go get -u github.com/yahoojapan/ngtd/cmd/ngtd
 ```
+
+## Docker
+You can get [ngtd docker image](https://hub.docker.com/r/yahoojapan/ngtd/) with the following command.
+
+```
+$ docker pull yahoojapan/ngtd
+```
+
+The image include only NGTD single binary, you enable to run the docker container.
 
 Usage
 -----
