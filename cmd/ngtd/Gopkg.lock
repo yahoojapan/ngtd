@@ -2,12 +2,15 @@
 
 
 [[projects]]
+  digest = "1:0f98f59e9a2f4070d66f0c9c39561f68fcd1dc837b22a852d28d0003aebd1b1e"
   name = "github.com/boltdb/bolt"
   packages = ["."]
+  pruneopts = "UT"
   revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
   version = "v1.3.1"
 
 [[projects]]
+  digest = "1:6361fc2f37f6a779924d408a955883db8ae02255a26473517b03cd0a80f8cdd5"
   name = "github.com/go-redis/redis"
   packages = [
     ".",
@@ -17,55 +20,69 @@
     "internal/pool",
     "internal/proto",
     "internal/singleflight",
-    "internal/util"
+    "internal/util",
   ]
+  pruneopts = "UT"
   revision = "877867d2845fbaf86798befe410b6ceb6f5c29a3"
   version = "v6.10.2"
 
 [[projects]]
+  digest = "1:8caffcd8995b0eae7d2c18b2baefabef331bb05b1e16ed2b26b732c3349e6989"
   name = "github.com/golang/protobuf"
   packages = [
     "proto",
     "ptypes",
     "ptypes/any",
     "ptypes/duration",
-    "ptypes/timestamp"
+    "ptypes/timestamp",
   ]
+  pruneopts = "UT"
   revision = "925541529c1fa6821df4e44ce2723319eb2be768"
   version = "v1.0.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:29a5ab9fa9e845fd8e8726f31b187d710afd271ef1eb32085fe3d604b7e06382"
   name = "github.com/golang/snappy"
   packages = ["."]
+  pruneopts = "UT"
   revision = "553a641470496b2327abcac10b36396bd98e45c9"
 
 [[projects]]
+  digest = "1:160eabf7a69910fd74f29c692718bc2437c1c1c7d4c9dea9712357752a70e5df"
   name = "github.com/gorilla/context"
   packages = ["."]
+  pruneopts = "UT"
   revision = "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
   version = "v1.1"
 
 [[projects]]
+  digest = "1:88aa9e326e2bd6045a46e00a922954b3e1a9ac5787109f49ac85366df370e1e5"
   name = "github.com/gorilla/mux"
   packages = ["."]
+  pruneopts = "UT"
   revision = "53c1911da2b537f792e7cafcb446b05ffe33b996"
   version = "v1.6.1"
 
 [[projects]]
+  digest = "1:803e0b9b60fad9aa4ad7bdf1a775af7d2908f734d3d9e0f30e3ba2b6e9d6307a"
   name = "github.com/kpango/glg"
   packages = ["."]
+  pruneopts = "UT"
   revision = "fcb2a2966be7d6e3e94e72b1ab155a21c20b64c5"
   version = "1.1"
 
 [[projects]]
+  digest = "1:ee0845ea64262e3d1a6e2eab768fcb2008a0c8e571b7a3bebea554a1c031aeeb"
   name = "github.com/mattn/go-sqlite3"
   packages = ["."]
+  pruneopts = "UT"
   revision = "6c771bb9887719704b210e87e934f08be014bdb1"
   version = "v1.6.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:38dd44d6db596fc0ac3c5165e1677d63b1c1068bc8753278ad099d64af69be0c"
   name = "github.com/syndtr/goleveldb"
   packages = [
     "leveldb",
@@ -79,18 +96,22 @@
     "leveldb/opt",
     "leveldb/storage",
     "leveldb/table",
-    "leveldb/util"
+    "leveldb/util",
   ]
+  pruneopts = "UT"
   revision = "714f901b98fdb3aa954b4193d8cbd64a28d80cad"
 
 [[projects]]
   branch = "master"
+  digest = "1:878dcd17d2a12184d281f2fa8d228d36c37d2c3dfea17c2cbcba009760359b97"
   name = "github.com/yahoojapan/gongt"
   packages = ["."]
+  pruneopts = "UT"
   revision = "c05b394542c59207d058dd0c6d5c7a0ec6879fb6"
 
 [[projects]]
   branch = "master"
+  digest = "1:913ac5fd5b280a4c7bf6540b0cddc6691af943fcb0ed4ef81eae4f1f5762301a"
   name = "github.com/yahoojapan/ngtd"
   packages = [
     ".",
@@ -99,12 +120,14 @@
     "model",
     "proto",
     "router",
-    "service"
+    "service",
   ]
+  pruneopts = "UT"
   revision = "b2f3b62237433d93a7536b2864f48204f4604643"
 
 [[projects]]
   branch = "master"
+  digest = "1:9349bd005ea80ec1b37032d01daedc81168348a9c295f7846188adfb2f405554"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -114,17 +137,21 @@
     "idna",
     "internal/timeseries",
     "lex/httplex",
-    "trace"
+    "trace",
   ]
+  pruneopts = "UT"
   revision = "5f9ae10d9af5b1c89ae6904293b14b064d4ada23"
 
 [[projects]]
   branch = "master"
+  digest = "1:37172cb9f01590dd321e1972b222368c58eaf09c0543c1025252bc628f09bf11"
   name = "golang.org/x/sys"
   packages = ["unix"]
+  pruneopts = "UT"
   revision = "79b0c6888797020a994db17c8510466c72fe75d9"
 
 [[projects]]
+  digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
   name = "golang.org/x/text"
   packages = [
     "collate",
@@ -140,18 +167,22 @@
     "unicode/bidi",
     "unicode/cldr",
     "unicode/norm",
-    "unicode/rangetable"
+    "unicode/rangetable",
   ]
+  pruneopts = "UT"
   revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
   version = "v0.3.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:cd018653a358d4b743a9d3bee89e825521f2ab2f2ec0770164bf7632d8d73ab7"
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
+  pruneopts = "UT"
   revision = "7fd901a49ba6a7f87732eb344f6e3c5b19d1b200"
 
 [[projects]]
+  digest = "1:f47fb9bd1a9173285be23a1a1342e019abddfd787216e7f2c555ddba837e98ce"
   name = "google.golang.org/grpc"
   packages = [
     ".",
@@ -176,20 +207,31 @@
     "stats",
     "status",
     "tap",
-    "transport"
+    "transport",
   ]
+  pruneopts = "UT"
   revision = "d11072e7ca9811b1100b80ca0269ac831f06d024"
   version = "v1.11.3"
 
 [[projects]]
+  digest = "1:b24d38b282bacf9791408a080f606370efa3d364e4b5fd9ba0f7b87786d3b679"
   name = "gopkg.in/urfave/cli.v1"
   packages = ["."]
+  pruneopts = "UT"
   revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
   version = "v1.20.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fac26eee89199127972eeffa028c3229ec0977a02a611df69be29015021aba28"
+  input-imports = [
+    "github.com/kpango/glg",
+    "github.com/mattn/go-sqlite3",
+    "github.com/yahoojapan/gongt",
+    "github.com/yahoojapan/ngtd",
+    "github.com/yahoojapan/ngtd/kvs",
+    "github.com/yahoojapan/ngtd/service",
+    "gopkg.in/urfave/cli.v1",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
