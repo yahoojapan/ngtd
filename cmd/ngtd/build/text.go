@@ -45,8 +45,8 @@ func NewTextReader(p string) (*TextReader, error) {
 }
 
 func (x TextReader) Next() ([]byte, error) {
-	line, _, err := x.r.ReadLine()
-	return line, err
+	line, err := x.r.ReadString('\n')
+	return []byte(strings.Trim(line, "\r\n")), err
 }
 
 func (x TextReader) Close() error {
