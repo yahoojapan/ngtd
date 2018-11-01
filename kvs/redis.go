@@ -51,7 +51,7 @@ func NewRedis(host, port, pass string, kv, vk int) (*Redis, error) {
 func (r *Redis) GetKey(val uint) ([]byte, error) {
 	pipe := r.client.TxPipeline()
 	pipe.Select(r.vk)
-	key := pipe.Get(string(val))
+	key := pipe.Get(fmt.Sprint(val))
 	if _, err := pipe.Exec(); err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func (r *Redis) Set(key []byte, val uint) error {
 	pipe.Select(r.kv)
 	kv := pipe.Set(string(key), val, 0)
 	pipe.Select(r.vk)
-	vk := pipe.Set(string(val), key, 0)
+	vk := pipe.Set(fmt.Sprint(val), key, 0)
 	if _, err := pipe.Exec(); err != nil {
 		return err
 	}
@@ -96,7 +96,7 @@ func (r *Redis) Delete(key []byte) error {
 	pipe.Select(r.kv)
 	kv := pipe.Del(string(key))
 	pipe.Select(r.vk)
-	vk := pipe.Del(string(val))
+	vk := pipe.Del(fmt.Sprint(val))
 	if _, err := pipe.Exec(); err != nil {
 		return err
 	}
