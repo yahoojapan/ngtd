@@ -18,9 +18,23 @@ package kvs
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/go-redis/redis"
 )
+
+const (
+	base = 36
+)
+
+func toRedisVal(v uint) string {
+	return strconv.FormatUint(uint64(v), base)
+}
+
+func fromRedisVal(v string) (uint, error) {
+	val, err := strconv.ParseUint(v, base, 32)
+	return uint(val), err
+}
 
 type Redis struct {
 	client *redis.Client
@@ -51,7 +65,7 @@ func NewRedis(host, port, pass string, kv, vk int) (*Redis, error) {
 func (r *Redis) GetKey(val uint) ([]byte, error) {
 	pipe := r.client.TxPipeline()
 	pipe.Select(r.vk)
-	key := pipe.Get(string(val))
+	key := pipe.Get(toRedisVal(val))
 	if _, err := pipe.Exec(); err != nil {
 		return nil, err
 	}
@@ -65,19 +79,16 @@ func (r *Redis) GetVal(key []byte) (uint, error) {
 	if _, err := pipe.Exec(); err != nil {
 		return 0, err
 	}
-	v, err := val.Uint64()
-	if err != nil {
-		return 0, err
-	}
-	return uint(v), nil
+	return fromRedisVal(val.Val())
 }
 
 func (r *Redis) Set(key []byte, val uint) error {
+	v := toRedisVal(val)
 	pipe := r.client.TxPipeline()
 	pipe.Select(r.kv)
-	kv := pipe.Set(string(key), val, 0)
+	kv := pipe.Set(string(key), v, 0)
 	pipe.Select(r.vk)
-	vk := pipe.Set(string(val), key, 0)
+	vk := pipe.Set(v, key, 0)
 	if _, err := pipe.Exec(); err != nil {
 		return err
 	}
@@ -96,7 +107,7 @@ func (r *Redis) Delete(key []byte) error {
 	pipe.Select(r.kv)
 	kv := pipe.Del(string(key))
 	pipe.Select(r.vk)
-	vk := pipe.Del(string(val))
+	vk := pipe.Del(toRedisVal(val))
 	if _, err := pipe.Exec(); err != nil {
 		return err
 	}

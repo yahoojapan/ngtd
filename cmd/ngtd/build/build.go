@@ -17,6 +17,7 @@
 package build
 
 import (
+	"fmt"
 	"io"
 	"sync"
 
@@ -59,6 +60,10 @@ func (b *builder) Run(index string, dimension, poolSize int) error {
 		gongt.SetDimension(dimension)
 	}
 	gongt.Open()
+
+	if errs := gongt.GetErrors(); len(errs) > 0 {
+		return fmt.Errorf("Get gongt errors: %v", errs)
+	}
 
 	b.build()
 
