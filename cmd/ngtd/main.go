@@ -101,7 +101,6 @@ func main() {
 			},
 			cli.IntSliceFlag{
 				Name:  "redis-database-index, I",
-				Value: &cli.IntSlice{0, 1},
 				Usage: "list up 2 redis database indexes",
 			},
 		}
@@ -113,7 +112,10 @@ func main() {
 		p := c.String("database-path")
 		switch dbType {
 		case "redis":
-			index := c.IntSlice("redis-database-index")
+			var index = c.IntSlice("redis-database-index")
+			if len(index) == 0 {
+				index = cli.IntSlice{0, 1}
+			}
 			return kvs.NewRedis(c.String("redis-host"), c.String("redis-port"), c.String("redis-password"), index[0], index[1])
 		case "bolt":
 			return kvs.NewBoltDB(p)
