@@ -10,7 +10,8 @@ jobs:
         environment:
           GO15VERNDOREXPERIMENT: 1
           LD_LIBRARY_PATH: /usr/local/lib
-          NGT_VERSION: 1.4.3
+          NGT_VERSION: 1.4.5
+          GO111MODULE: "on"
       - image: redis
     environment:
       TEST_RESULTS: /tmp/test-results
@@ -32,13 +33,10 @@ jobs:
           name: install go tools
           command: |
             go get -u -v github.com/jstemmer/go-junit-report
-            go get -u -v github.com/golang/dep/cmd/dep
       - run:
           name: build
           command: |
             mkdir -p $TEST_RESULTS
-            cp ./cmd/ngtd/Gopkg.* ./
-            dep ensure
             go build -ldflags="-s -w" -v
       - run:
           name: test
