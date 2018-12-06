@@ -3,16 +3,13 @@ VERSION := v0.0.1
 GO_VERSION:=$(shell go version)
 REVISION := $(shell git rev-parse --short HEAD)
 
-.PHONY: build deps
-
-deps:
-	dep ensure
+.PHONY: build
 
 proto/ngtd.pb.go: proto/ngtd.proto
 	protoc --gofast_out=plugins=grpc:. proto/ngtd.proto
 
 build: proto/ngtd.pb.go
-	go build -ldflags="-w -s"
+	GO111MODULE=on go build -ldflags="-w -s"
 
 test: proto/ngtd.pb.go
-	go test -v ./...
+	GO111MODULE=on go test -v ./...
