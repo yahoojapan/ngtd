@@ -112,11 +112,11 @@ func main() {
 		p := c.String("database-path")
 		switch dbType {
 		case "redis":
-			var index = c.IntSlice("redis-database-index")
-			if len(index) == 0 {
-				index = cli.IntSlice{0, 1}
+			indexes := c.IntSlice("redis-database-index")
+			if len(indexes) == 0 {
+				indexes = cli.IntSlice{0, 1}
 			}
-			return kvs.NewRedis(c.String("redis-host"), c.String("redis-port"), c.String("redis-password"), index[0], index[1])
+			return kvs.NewRedis(c.String("redis-host"), c.String("redis-port"), c.String("redis-password"), indexes[0], indexes[1])
 		case "bolt":
 			return kvs.NewBoltDB(p)
 		case "golevel":

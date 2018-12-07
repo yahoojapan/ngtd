@@ -1,7 +1,7 @@
 version: 2
 machine:
   golang:
-    version: 1.10
+    version: 1.11
 jobs:
   build:
     working_directory: /go/src/github.com/yahoojapan/ngtd
@@ -22,13 +22,7 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install cmake
-
-            curl -LO https://github.com/yahoojapan/NGT/archive/v$NGT_VERSION.tar.gz
-            tar zxf v$NGT_VERSION.tar.gz
-            cd NGT-$NGT_VERSION
-            cmake .
-            make -j
-            sudo make install
+            sudo -E tools/install-ngt.sh
       - run:
           name: install go tools
           command: |

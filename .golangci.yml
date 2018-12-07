@@ -1,0 +1,6 @@
+service:
+  golangci-lint-version: 1.11.x
+  prepare:
+    - apt-get update && apt-get install -y --no-install-recommends cmake
+    - NGT_VERSION=1.4.5 tools/install-ngt.sh
+    - GO111MODULE=on go mod download
