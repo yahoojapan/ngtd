@@ -27,16 +27,10 @@ RUN cd /opt && curl -sSL -O https://storage.googleapis.com/golang/go${GOVERSION}
     ln -s /opt/go/bin/go /usr/bin/ && \
     mkdir $GOPATH
 
-RUN curl -sSL "https://github.com/yahoojapan/NGT/archive/v${NGT_VERSION}.zip" -o NGT.zip \
-    && unzip NGT.zip \
-    && cd NGT-${NGT_VERSION} \
-    && cmake . \
-    && make -j \
-    && make install \
-    && cd .. \
-    && rm -rf NGT.zip NGT-${NGT_VERSION}
+WORKDIR ${GOPATH}/src/github.com/yahoojapan/ngtd
+COPY . .
 
-COPY . ${GOPATH}/src/github.com/yahoojapan/ngtd
+RUN tools/install-ngt.sh
 
 WORKDIR ${GOPATH}/src/github.com/yahoojapan/ngtd/cmd/ngtd
 RUN CGO_ENABLED=1 \
