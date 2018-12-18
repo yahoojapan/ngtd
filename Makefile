@@ -3,16 +3,20 @@ VERSION := v0.0.1
 GO_VERSION:=$(shell go version)
 REVISION := $(shell git rev-parse --short HEAD)
 
-.PHONY: build deps
+.PHONY: build
 
 deps:
-	dep ensure
+	curl -LO https://github.com/yahoojapan/NGT/archive/v$(NGT_VERSION).tar.gz
+	tar zxf v$(NGT_VERSION).tar.gz -C /tmp
+	cd /tmp/NGT-$(NGT_VERSION); cmake .
+	make -j -C /tmp/NGT-$(NGT_VERSION)
+	make install -C /tmp/NGT-$(NGT_VERSION)
 
 proto/ngtd.pb.go: proto/ngtd.proto
 	protoc --gofast_out=plugins=grpc:. proto/ngtd.proto
 
 build: proto/ngtd.pb.go
-	go build -ldflags="-w -s"
+	GO111MODULE=on go build -ldflags="-w -s"
 
 test: proto/ngtd.pb.go
-	go test -v ./...
+	GO111MODULE=on go test -v ./...

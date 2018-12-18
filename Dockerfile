@@ -1,14 +1,13 @@
 FROM ubuntu:16.04 AS builder
 
-
 ENV APP_NAME ngtd
 
-ENV NGT_VERSION 1.3.2
+ENV NGT_VERSION 1.4.5
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV INITRD No
 ENV LANG ja_JP.UTF-8
-ENV GOVERSION 1.10.1
+ENV GOVERSION 1.11.4
 ENV GOROOT /opt/go
 ENV GOPATH /go
 
@@ -28,30 +27,20 @@ RUN cd /opt && curl -sSL -O https://storage.googleapis.com/golang/go${GOVERSION}
     ln -s /opt/go/bin/go /usr/bin/ && \
     mkdir $GOPATH
 
-RUN curl -sSL "https://github.com/yahoojapan/NGT/archive/v${NGT_VERSION}.zip" -o NGT.zip \
-    && unzip NGT.zip \
-    && cd NGT-${NGT_VERSION} \
-    && cmake . \
-    && make -j \
-    && make install \
-    && cd .. \
-    && rm -rf NGT.zip NGT-${NGT_VERSION}
+WORKDIR ${GOPATH}/src/github.com/yahoojapan/ngtd
+COPY . .
 
-RUN go get -v -u github.com/yahoojapan/ngtd
+RUN make deps
 
 WORKDIR ${GOPATH}/src/github.com/yahoojapan/ngtd/cmd/ngtd
-
-RUN go get -v -u github.com/golang/dep/cmd/dep \
-    && ${GOPATH}/bin/dep ensure
-
-
 RUN CGO_ENABLED=1 \
     CGO_CXXFLAGS="-g -Ofast -march=native" \
     CGO_FFLAGS="-g -Ofast -march=native" \
     CGO_LDFLAGS="-g -Ofast -march=native" \
     GOOS=$(go env GOOS) \
     GOARCH=$(go env GOARCH) \
-    go build --ldflags '-s -w -linkmode "external" -extldflags "-static -fPIC -m64 -lm -pthread -std=c++17 -lstdc++"' -a -tags "cgo netgo" -installsuffix "cgo netgo" -o ${APP_NAME} \
+    GO111MODULE=on \
+    go build --ldflags '-s -w -linkmode "external" -extldflags "-static -fPIC -m64 -pthread -fopenmp -std=c++17 -lstdc++ -lm"' -a -tags "cgo netgo" -installsuffix "cgo netgo" -o ${APP_NAME} \
     && upx -9 -o /usr/bin/${APP_NAME} ${APP_NAME}
 
 # Start From Scratch For Running Environment
