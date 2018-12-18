@@ -7,7 +7,7 @@ ENV NGT_VERSION 1.4.5
 ENV DEBIAN_FRONTEND noninteractive
 ENV INITRD No
 ENV LANG ja_JP.UTF-8
-ENV GOVERSION 1.11.2
+ENV GOVERSION 1.11.4
 ENV GOROOT /opt/go
 ENV GOPATH /go
 
@@ -30,7 +30,7 @@ RUN cd /opt && curl -sSL -O https://storage.googleapis.com/golang/go${GOVERSION}
 WORKDIR ${GOPATH}/src/github.com/yahoojapan/ngtd
 COPY . .
 
-RUN tools/install-ngt.sh
+RUN make deps
 
 WORKDIR ${GOPATH}/src/github.com/yahoojapan/ngtd/cmd/ngtd
 RUN CGO_ENABLED=1 \
