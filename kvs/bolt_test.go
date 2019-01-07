@@ -37,6 +37,12 @@ func TestBolt(t *testing.T) {
 		GetKey(b, t)
 	})
 
+	t.Run("TestGetKeys", func(t *testing.T) {
+		b := initBolt(t)
+		defer SetupWithTeardown(b, t)()
+		GetKeys(b, t)
+	})
+
 	t.Run("TestGetVal", func(t *testing.T) {
 		b := initBolt(t)
 		defer SetupWithTeardown(b, t)()

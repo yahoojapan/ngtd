@@ -96,6 +96,26 @@ func GetKey(db KVS, t *testing.T) {
 	}
 }
 
+func GetKeys(db KVS, t *testing.T) {
+	tests := []struct {
+		vals []uint
+		keys [][]byte
+	}{
+		{[]uint{1}, [][]byte{[]byte("foo")}},
+		{[]uint{1, 2}, [][]byte{[]byte("foo"), []byte("bar")}},
+		{[]uint{3, 4}, [][]byte{[]byte("hoge"), []byte("huga")}},
+	}
+	for _, tt := range tests {
+		keys, err := db.GetKeys(tt.vals)
+		if err != nil {
+			t.Errorf("Unexpected error: TestGetKeys(%v) %v", tt, err)
+		}
+		if !reflect.DeepEqual(tt.keys, keys) {
+			t.Errorf("TestGetKeys(%v): %v, wanted: %v", tt.vals, keys, tt.keys)
+		}
+	}
+}
+
 func GetVal(db KVS, t *testing.T) {
 	tests := []struct {
 		key []byte
