@@ -73,13 +73,20 @@ func (s *Service) Search(vector []float64, size int, epsilon float32) ([]SearchR
 		return nil, err
 	}
 
-	ret := make([]SearchResult, len(result))
+	vals := make([]uint, len(result))
 	for i, v := range result {
-		id, err := s.db.GetKey(uint(v.ID))
+		vals[i] = uint(v.ID)
+	}
+	ids, err := s.db.GetKeys(vals)
+	if err != nil {
+		return nil, err
+	}
+	ret := make([]SearchResult, len(result))
+	for i, id := range ids {
 		ret[i] = SearchResult{
 			Id:       id,
-			Distance: v.Distance,
-			Error:    err,
+			Distance: result[i].Distance,
+			Error:    nil,
 		}
 	}
 	return ret, nil

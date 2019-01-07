@@ -57,8 +57,8 @@ func NewRedis(host, port, pass string, kv, vk int) (*Redis, error) {
 
 	return &Redis{
 		client: client,
-		kv: kv,
-		vk: vk,
+		kv:     kv,
+		vk:     vk,
 	}, nil
 }
 
@@ -70,6 +70,28 @@ func (r *Redis) GetKey(val uint) ([]byte, error) {
 		return nil, err
 	}
 	return key.Bytes()
+}
+
+func (r *Redis) GetKeys(vals []uint) ([][]byte, error) {
+	strVals := make([]string, len(vals))
+	for i, v := range vals {
+		strVals[i] = toRedisVal(v)
+	}
+
+	pipe := r.client.TxPipeline()
+	pipe.Select(r.vk)
+	keys := pipe.MGet(strVals...)
+	if _, err := pipe.Exec(); err != nil {
+		return nil, err
+	}
+	response := keys.Val()
+	byteKeys := make([][]byte, len(response))
+	for i, k := range response {
+		if xi, ok := k.(string); ok {
+			byteKeys[i] = []byte(xi)
+		}
+	}
+	return byteKeys, nil
 }
 
 func (r *Redis) GetVal(key []byte) (uint, error) {
