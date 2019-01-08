@@ -85,7 +85,10 @@ func (r *Redis) GetKeys(vals []uint) ([][]byte, error) {
 	if _, err := pipe.Exec(); err != nil {
 		return nil, err
 	}
-	response := keys.Val()
+	response, err := keys.Result()
+	if err != nil {
+		return nil, err
+	}
 	byteKeys := make([][]byte, len(response))
 	for i, k := range response {
 		if xi, ok := k.(string); ok {
