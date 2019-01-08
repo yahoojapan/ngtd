@@ -49,6 +49,7 @@ func (s *SQL) GetKey(val uint) ([]byte, error) {
 	return []byte(key), nil
 }
 
+// GetKeys wraps multiple calls GetKey
 func (s *SQL) GetKeys(vals []uint) ([][]byte, error) {
 	ret := make([][]byte, len(vals))
 	for i, val := range vals {

@@ -72,6 +72,7 @@ func (r *Redis) GetKey(val uint) ([]byte, error) {
 	return key.Bytes()
 }
 
+// GetKeys wraps multiple calls GetKey
 func (r *Redis) GetKeys(vals []uint) ([][]byte, error) {
 	strVals := make([]string, len(vals))
 	for i, v := range vals {

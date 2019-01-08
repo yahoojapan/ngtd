@@ -73,6 +73,7 @@ func (b *BoltDB) GetKey(val uint) ([]byte, error) {
 	return b.get(vkBoltBucketName, ToBytes(val))
 }
 
+// GetKeys wraps multiple calls GetKey
 func (b *BoltDB) GetKeys(vals []uint) ([][]byte, error) {
 	ret := make([][]byte, len(vals))
 	for i, val := range vals {
