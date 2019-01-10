@@ -64,6 +64,20 @@ type MultiRemoveResponse struct {
 	Errors []error `json:"errors"`
 }
 
+type GetObjectsRequest struct {
+	IDs []string `json:"ids"`
+}
+
+type GetObjectResult struct {
+	ID     string    `json:"id"`
+	Vector []float64 `json:"vector"`
+}
+
+type GetObjectsResponse struct {
+	Result []GetObjectResult `json:"result"`
+	Errors []string          `json:"errors"`
+}
+
 type ErrorResponse struct {
 	Code    int    `json:"code"`
 	Error   error  `json:"error"`

@@ -97,4 +97,10 @@ var routes = []Route{
 		"/dimension",
 		handler.GetDimension,
 	},
+	Route{
+		"GetObjects",
+		http.MethodPost,
+		"/getobjects",
+		handler.GetObjects,
+	},
 }

@@ -286,4 +286,55 @@ func TestHTTP(t *testing.T) {
 			}
 		}
 	})
+
+	t.Run("TestGetObjects", func(t *testing.T) {
+		defer SetupWithTeardown(t)()
+		tests := []struct {
+			ids  []string
+			want []model.GetObjectResult
+		}{
+			{[]string{"a"}, []model.GetObjectResult{
+				model.GetObjectResult{ID: "a", Vector: []float64{1, 0, 0, 0, 0, 0}}}},
+
+			{[]string{"a", "b"}, []model.GetObjectResult{
+				model.GetObjectResult{ID: "a", Vector: []float64{1, 0, 0, 0, 0, 0}},
+				model.GetObjectResult{ID: "b", Vector: []float64{0, 1, 0, 0, 0, 0}}}},
+
+			{[]string{"c", "d", "e", "f"}, []model.GetObjectResult{
+				model.GetObjectResult{ID: "c", Vector: []float64{0, 0, 1, 0, 0, 0}},
+				model.GetObjectResult{ID: "d", Vector: []float64{0, 0, 0, 1, 0, 0}},
+				model.GetObjectResult{ID: "e", Vector: []float64{0, 0, 0, 0, 1, 0}},
+				model.GetObjectResult{ID: "f", Vector: []float64{0, 0, 0, 0, 0, 1}}}},
+
+			{[]string{"a", "g", "c"}, []model.GetObjectResult{
+				model.GetObjectResult{ID: "a", Vector: []float64{1, 0, 0, 0, 0, 0}},
+				model.GetObjectResult{ID: "c", Vector: []float64{0, 0, 1, 0, 0, 0}}}},
+		}
+
+		for _, tt := range tests {
+			req := model.GetObjectsRequest{IDs: tt.ids}
+			reqBody, err := json.Marshal(req)
+			if err != nil {
+				t.Errorf("Unexpected error: TestHTTPGetObjects(%v)", err)
+			}
+
+			r, err := http.NewRequest(http.MethodPost, "/getobjects", bytes.NewReader(reqBody))
+			if err != nil {
+				t.Errorf("Unexpected error: TestHTTPGetObjects(%v)", err)
+			}
+			w := httptest.NewRecorder()
+			GetObjects(w, r)
+			if w.Code != http.StatusOK {
+				t.Errorf("Unexpected error: TestHTTPGetObjects(%v)", err)
+			}
+			var res model.GetObjectsResponse
+			if err := json.NewDecoder(w.Body).Decode(&res); err != nil {
+				t.Errorf("Unexpected error: TestHTTPGetObjects(%v)", err)
+			}
+
+			if !reflect.DeepEqual(tt.want, res.Result) {
+				t.Errorf("TestHTTPGetObjects(%v): %v, wanted: %v", tt.ids, res.Result, tt.want)
+			}
+		}
+	})
 }

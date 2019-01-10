@@ -17,6 +17,7 @@
 package service
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/yahoojapan/gongt"
@@ -31,6 +32,11 @@ type SearchResult struct {
 	Id       []byte
 	Distance float32
 	Error    error
+}
+
+type GetObjectResult struct {
+	Id     []byte
+	Vector []float64
 }
 
 var (
@@ -133,4 +139,31 @@ func (s *Service) Remove(id []byte) error {
 	}
 
 	return s.db.Delete(id)
+}
+
+func GetObject(id []byte) (*GetObjectResult, error) {
+	return s.GetObject(id)
+}
+
+func (s *Service) GetObject(id []byte) (*GetObjectResult, error) {
+	in, err := s.db.GetVal(id)
+	if err != nil {
+		return nil, err
+	}
+	if in <= 0 {
+		return nil, fmt.Errorf("Id(%s) is not in DB", id)
+	}
+	vector, err := gongt.GetStrictVector(in)
+	if err != nil {
+		return nil, err
+	}
+	v := make([]float64, len(vector))
+	for i, e := range vector {
+		v[i] = float64(e)
+	}
+	ret := &GetObjectResult{
+		Id:     id,
+		Vector: v,
+	}
+	return ret, nil
 }

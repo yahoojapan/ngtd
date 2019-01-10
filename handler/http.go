@@ -288,6 +288,41 @@ func GetDimension(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// GetObjects returns vectors.
+func GetObjects(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	var reqBody model.GetObjectsRequest
+	err := json.NewDecoder(r.Body).Decode(&reqBody)
+	if err != nil {
+		ErrorResponse(w,
+			http.StatusBadRequest,
+			"Invalid JSON Format",
+			err)
+		return
+	}
+	io.Copy(ioutil.Discard, r.Body)
+	r.Body.Close()
+
+	results := make([]model.GetObjectResult, 0, len(reqBody.IDs))
+	errs := make([]string, 0, len(reqBody.IDs))
+	for _, id := range reqBody.IDs {
+		result, err1 := service.GetObject(*(*[]byte)(unsafe.Pointer(&id)))
+		if err1 != nil {
+			errs = append(errs, fmt.Sprint(err1))
+		} else {
+			results = append(results, model.GetObjectResult{
+				ID:     *(*string)(unsafe.Pointer(&result.Id)),
+				Vector: result.Vector,
+			})
+		}
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(model.GetObjectsResponse{
+		Result: results,
+		Errors: errs,
+	})
+}
+
 func ErrorResponse(w http.ResponseWriter, code int, message string, err error) {
 	glg.Error(err)
 	w.WriteHeader(code)
