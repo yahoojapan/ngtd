@@ -157,13 +157,9 @@ func (s *Service) GetObject(id []byte) (*GetObjectResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	v := make([]float32, len(vector))
-	for i, e := range vector {
-		v[i] = float32(e)
-	}
 	ret := &GetObjectResult{
 		Id:     id,
-		Vector: v,
+		Vector: vector,
 	}
 	return ret, nil
 }
