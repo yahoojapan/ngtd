@@ -308,7 +308,7 @@ func GetObjects(w http.ResponseWriter, r *http.Request) {
 	for _, id := range reqBody.IDs {
 		result, err := service.GetObject(*(*[]byte)(unsafe.Pointer(&id)))
 		if err != nil {
-			errs = append(errs, fmt.Sprintf("Error: GetObject(%v) caused %v", id, err))
+			errs = append(errs, fmt.Sprintf("Error: GetObject(%s) caused %s", id, err.Error()))
 		} else {
 			results = append(results, model.GetObjectResult{
 				ID:     *(*string)(unsafe.Pointer(&result.Id)),

@@ -151,7 +151,7 @@ func (s *Service) GetObject(id []byte) (*GetObjectResult, error) {
 		return nil, err
 	}
 	if in <= 0 {
-		return nil, fmt.Errorf("Id(%s) is not in DB", id)
+		return nil, fmt.Errorf("Id(%s) is not in DB error", id)
 	}
 	vector, err := gongt.GetStrictVector(in)
 	if err != nil {
