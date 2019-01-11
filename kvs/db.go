@@ -22,6 +22,7 @@ import (
 
 type KVS interface {
 	GetKey(uint) ([]byte, error)
+	GetKeys([]uint) ([][]byte, error)
 	GetVal([]byte) (uint, error)
 	Set([]byte, uint) error
 	Delete([]byte) error

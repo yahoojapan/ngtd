@@ -44,6 +44,12 @@ func TestSQL(t *testing.T) {
 		GetKey(s, t)
 	})
 
+	t.Run("TestGetKeys", func(t *testing.T) {
+		s := initSQL(t)
+		defer SetupWithTeardown(s, t)()
+		GetKeys(s, t)
+	})
+
 	t.Run("TestGetVal", func(t *testing.T) {
 		s := initSQL(t)
 		defer SetupWithTeardown(s, t)()

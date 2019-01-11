@@ -49,6 +49,19 @@ func (s *SQL) GetKey(val uint) ([]byte, error) {
 	return []byte(key), nil
 }
 
+// GetKeys wraps multiple calls GetKey
+func (s *SQL) GetKeys(vals []uint) ([][]byte, error) {
+	ret := make([][]byte, len(vals))
+	for i, val := range vals {
+		k, err := s.GetKey(val)
+		if err != nil {
+			return nil, err
+		}
+		ret[i] = k
+	}
+	return ret, nil
+}
+
 func (s *SQL) GetVal(key []byte) (uint, error) {
 	stmt, err := s.db.Prepare("select val from kvs where key = ? limit 1")
 	if err != nil {

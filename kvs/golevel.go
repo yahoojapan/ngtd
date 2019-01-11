@@ -47,6 +47,19 @@ func (g *GoLevel) GetKey(val uint) ([]byte, error) {
 	return g.vk.Get(ToBytes(val), nil)
 }
 
+// GetKeys wraps multiple calls GetKey
+func (g *GoLevel) GetKeys(vals []uint) ([][]byte, error) {
+	ret := make([][]byte, len(vals))
+	for i, val := range vals {
+		k, err := g.GetKey(val)
+		if err != nil {
+			return nil, err
+		}
+		ret[i] = k
+	}
+	return ret, nil
+}
+
 func (g *GoLevel) GetVal(key []byte) (uint, error) {
 	val, err := g.kv.Get(key, nil)
 	if err != nil {

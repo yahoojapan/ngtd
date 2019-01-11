@@ -42,6 +42,12 @@ func TestGoLevel(t *testing.T) {
 		GetKey(g, t)
 	})
 
+	t.Run("TestGetKeys", func(t *testing.T) {
+		g := initGoLevel(t)
+		defer SetupWithTeardown(g, t)()
+		GetKeys(g, t)
+	})
+
 	t.Run("TestGetVal", func(t *testing.T) {
 		g := initGoLevel(t)
 		defer SetupWithTeardown(g, t)()

@@ -20,6 +20,7 @@ import (
 	"errors"
 
 	"fmt"
+
 	"github.com/boltdb/bolt"
 )
 
@@ -70,6 +71,19 @@ func (b *BoltDB) get(boltBucketName []byte, key []byte) ([]byte, error) {
 
 func (b *BoltDB) GetKey(val uint) ([]byte, error) {
 	return b.get(vkBoltBucketName, ToBytes(val))
+}
+
+// GetKeys wraps multiple calls GetKey
+func (b *BoltDB) GetKeys(vals []uint) ([][]byte, error) {
+	ret := make([][]byte, len(vals))
+	for i, val := range vals {
+		k, err := b.GetKey(val)
+		if err != nil {
+			return nil, err
+		}
+		ret[i] = k
+	}
+	return ret, nil
 }
 
 func (b *BoltDB) GetVal(key []byte) (uint, error) {

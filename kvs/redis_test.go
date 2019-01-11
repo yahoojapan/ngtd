@@ -37,6 +37,12 @@ func TestRedis(t *testing.T) {
 		GetKey(r, t)
 	})
 
+	t.Run("TestGetKeys", func(t *testing.T) {
+		r := initRedis(t)
+		defer SetupWithTeardown(r, t)()
+		GetKeys(r, t)
+	})
+
 	t.Run("TestGetVal", func(t *testing.T) {
 		r := initRedis(t)
 		defer SetupWithTeardown(r, t)()
