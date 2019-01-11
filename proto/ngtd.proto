@@ -63,18 +63,31 @@ message GetDimensionResponse {
   int32 dimension = 1;
 }
 
+message GetObjectRequest {
+  bytes id = 1;
+}
+
+message GetObjectResponse {
+  bytes id = 1;
+  repeated float vector = 2;
+  string error = 99;
+}
+
 service NGTD {
   rpc Search (SearchRequest) returns (SearchResponse) {}
   rpc SearchByID (SearchRequest) returns (SearchResponse) {}
   rpc StreamSearch (stream SearchRequest) returns (stream SearchResponse) {}
   rpc StreamSearchByID (stream SearchRequest) returns (stream SearchResponse) {}
-  
+
   rpc Insert (InsertRequest) returns (InsertResponse) {}
   rpc StreamInsert (stream InsertRequest) returns (stream InsertResponse) {}
 
   rpc Remove (RemoveRequest) returns (RemoveResponse) {}
   rpc StreamRemove (stream RemoveRequest) returns (stream RemoveResponse) {}
- 
+
+  rpc GetObject (GetObjectRequest) returns (GetObjectResponse) {}
+  rpc StreamGetObject (stream GetObjectRequest) returns (stream GetObjectResponse) {}
+
   rpc CreateIndex (CreateIndexRequest) returns (Empty) {}
   rpc SaveIndex (Empty) returns (Empty) {}
   rpc GetDimension (Empty) returns (GetDimensionResponse) {}
