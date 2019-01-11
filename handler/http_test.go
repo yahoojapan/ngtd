@@ -294,21 +294,21 @@ func TestHTTP(t *testing.T) {
 			want []model.GetObjectResult
 		}{
 			{[]string{"a"}, []model.GetObjectResult{
-				model.GetObjectResult{ID: "a", Vector: []float64{1, 0, 0, 0, 0, 0}}}},
+				model.GetObjectResult{ID: "a", Vector: []float32{1, 0, 0, 0, 0, 0}}}},
 
 			{[]string{"a", "b"}, []model.GetObjectResult{
-				model.GetObjectResult{ID: "a", Vector: []float64{1, 0, 0, 0, 0, 0}},
-				model.GetObjectResult{ID: "b", Vector: []float64{0, 1, 0, 0, 0, 0}}}},
+				model.GetObjectResult{ID: "a", Vector: []float32{1, 0, 0, 0, 0, 0}},
+				model.GetObjectResult{ID: "b", Vector: []float32{0, 1, 0, 0, 0, 0}}}},
 
 			{[]string{"c", "d", "e", "f"}, []model.GetObjectResult{
-				model.GetObjectResult{ID: "c", Vector: []float64{0, 0, 1, 0, 0, 0}},
-				model.GetObjectResult{ID: "d", Vector: []float64{0, 0, 0, 1, 0, 0}},
-				model.GetObjectResult{ID: "e", Vector: []float64{0, 0, 0, 0, 1, 0}},
-				model.GetObjectResult{ID: "f", Vector: []float64{0, 0, 0, 0, 0, 1}}}},
+				model.GetObjectResult{ID: "c", Vector: []float32{0, 0, 1, 0, 0, 0}},
+				model.GetObjectResult{ID: "d", Vector: []float32{0, 0, 0, 1, 0, 0}},
+				model.GetObjectResult{ID: "e", Vector: []float32{0, 0, 0, 0, 1, 0}},
+				model.GetObjectResult{ID: "f", Vector: []float32{0, 0, 0, 0, 0, 1}}}},
 
 			{[]string{"a", "g", "c"}, []model.GetObjectResult{
-				model.GetObjectResult{ID: "a", Vector: []float64{1, 0, 0, 0, 0, 0}},
-				model.GetObjectResult{ID: "c", Vector: []float64{0, 0, 1, 0, 0, 0}}}},
+				model.GetObjectResult{ID: "a", Vector: []float32{1, 0, 0, 0, 0, 0}},
+				model.GetObjectResult{ID: "c", Vector: []float32{0, 0, 1, 0, 0, 0}}}},
 		}
 
 		for _, tt := range tests {
