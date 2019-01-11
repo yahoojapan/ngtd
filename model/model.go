@@ -70,7 +70,7 @@ type GetObjectsRequest struct {
 
 type GetObjectResult struct {
 	ID     string    `json:"id"`
-	Vector []float64 `json:"vector"`
+	Vector []float32 `json:"vector"`
 }
 
 type GetObjectsResponse struct {

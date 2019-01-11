@@ -36,7 +36,7 @@ type SearchResult struct {
 
 type GetObjectResult struct {
 	Id     []byte
-	Vector []float64
+	Vector []float32
 }
 
 var (
@@ -157,9 +157,9 @@ func (s *Service) GetObject(id []byte) (*GetObjectResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	v := make([]float64, len(vector))
+	v := make([]float32, len(vector))
 	for i, e := range vector {
-		v[i] = float64(e)
+		v[i] = float32(e)
 	}
 	ret := &GetObjectResult{
 		Id:     id,

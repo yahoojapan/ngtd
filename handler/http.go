@@ -306,9 +306,9 @@ func GetObjects(w http.ResponseWriter, r *http.Request) {
 	results := make([]model.GetObjectResult, 0, len(reqBody.IDs))
 	errs := make([]string, 0, len(reqBody.IDs))
 	for _, id := range reqBody.IDs {
-		result, err1 := service.GetObject(*(*[]byte)(unsafe.Pointer(&id)))
-		if err1 != nil {
-			errs = append(errs, fmt.Sprint(err1))
+		result, err := service.GetObject(*(*[]byte)(unsafe.Pointer(&id)))
+		if err != nil {
+			errs = append(errs, fmt.Sprintf("Error: GetObject(%v) caused %v", id, err))
 		} else {
 			results = append(results, model.GetObjectResult{
 				ID:     *(*string)(unsafe.Pointer(&result.Id)),
