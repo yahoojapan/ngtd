@@ -103,6 +103,11 @@ func main() {
 				Name:  "redis-database-index, I",
 				Usage: "list up 2 redis database indexes",
 			},
+			cli.IntFlag{
+				Name:  "redis-ping-max-retry",
+				Value: 60,
+				Usage: "wait until redis finish loading dump.rdb 10 * redis-ping-max-retry[sec].",
+			},
 		}
 
 		return append(commonFlags, f...)
@@ -116,7 +121,11 @@ func main() {
 			if len(indexes) == 0 {
 				indexes = cli.IntSlice{0, 1}
 			}
-			return kvs.NewRedis(c.String("redis-host"), c.String("redis-port"), c.String("redis-password"), indexes[0], indexes[1])
+			pingMaxRetry := c.Int("redis-ping-max-retry")
+			if pingMaxRetry <= 0 {
+				return nil, fmt.Errorf("invalid value: redis-ping-max-retry should be greater than 0: %d", pingMaxRetry)
+			}
+			return kvs.NewRedis(c.String("redis-host"), c.String("redis-port"), c.String("redis-password"), indexes[0], indexes[1], pingMaxRetry)
 		case "bolt":
 			return kvs.NewBoltDB(p)
 		case "golevel":

@@ -19,12 +19,14 @@ package kvs
 import (
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/go-redis/redis"
 )
 
 const (
-	base = 36
+	base      = 36
+	pingSleep = 10 * time.Second
 )
 
 func toRedisVal(v uint) string {
@@ -42,7 +44,20 @@ type Redis struct {
 	vk     int
 }
 
-func NewRedis(host, port, pass string, kv, vk int) (*Redis, error) {
+func loopPing(client *redis.Client, numRetry int) error {
+	var err error
+	for i := 0; i < numRetry; i++ {
+		_, err = client.Ping().Result()
+		if err != nil {
+			time.Sleep(pingSleep)
+		} else {
+			return nil
+		}
+	}
+	return err
+}
+
+func NewRedis(host, port, pass string, kv, vk int, pingMaxRetry int) (*Redis, error) {
 	if kv == vk {
 		return nil, fmt.Errorf("kv and vk must be defferent. (%d, %d)", kv, vk)
 	}
@@ -51,7 +66,7 @@ func NewRedis(host, port, pass string, kv, vk int) (*Redis, error) {
 		Password: pass,
 	})
 
-	if _, err := client.Ping().Result(); err != nil {
+	if err := loopPing(client, pingMaxRetry); err != nil {
 		return nil, err
 	}
 

@@ -22,7 +22,8 @@ import (
 )
 
 func initRedis(t *testing.T) *Redis {
-	r, err := NewRedis("127.0.0.1", "6379", "", 0, 1)
+	pingMaxRetry := 1
+	r, err := NewRedis("127.0.0.1", "6379", "", 0, 1, pingMaxRetry)
 	if err != nil {
 		t.Fatalf("Unexpected Error: initRedis(): %v", err)
 	}
