@@ -36,6 +36,7 @@ func (m *Map) GetKey(val uint) ([]byte, error) {
 	return []byte(m.vk[val]), nil
 }
 
+// GetKeys returns keys corresponding to vals
 func (m *Map) GetKeys(vals []uint) ([][]byte, error) {
 	result := make([][]byte, len(vals))
 	for i, val := range vals {
