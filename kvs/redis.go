@@ -57,6 +57,7 @@ func loopPing(client *redis.Client, numRetry int) error {
 	return err
 }
 
+// NewRedis initializes Redis
 func NewRedis(host, port, pass string, kv, vk int, pingMaxRetry int) (*Redis, error) {
 	if kv == vk {
 		return nil, fmt.Errorf("kv and vk must be defferent. (%d, %d)", kv, vk)
