@@ -135,7 +135,7 @@ func main() {
 			if pingRetryFreq <= 0 {
 				return nil, fmt.Errorf("invalid value: redis-ping-retry-freq should be greater than 0: %d", pingRetryFreq)
 			}
-			return kvs.NewRedis(c.String("redis-host"), c.String("redis-port"), c.String("redis-password"), indexes[0], indexes[1], pingTimeout*time.Second, pingRetryFreq*time.Second)
+			return kvs.NewRedis(c.String("redis-host"), c.String("redis-port"), c.String("redis-password"), indexes[0], indexes[1], time.Duration(pingTimeout)*time.Second, time.Duration(pingRetryFreq)*time.Second)
 		case "bolt":
 			return kvs.NewBoltDB(p)
 		case "golevel":
