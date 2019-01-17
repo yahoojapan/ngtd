@@ -19,6 +19,7 @@ package kvs
 import (
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/go-redis/redis"
 )
@@ -42,7 +43,31 @@ type Redis struct {
 	vk     int
 }
 
-func NewRedis(host, port, pass string, kv, vk int) (*Redis, error) {
+func loopPing(client *redis.Client, timeout, retryFreq time.Duration) error {
+	end := time.NewTicker(timeout)
+	tick := time.NewTicker(retryFreq)
+
+	defer func() {
+		end.Stop()
+		tick.Stop()
+	}()
+
+	var err error
+	for {
+		select {
+		case <-end.C:
+			return err
+		case <-tick.C:
+			_, err = client.Ping().Result()
+			if err == nil {
+				return nil
+			}
+		}
+	}
+}
+
+// NewRedis initializes Redis
+func NewRedis(host, port, pass string, kv, vk int, pingTimeout, pingRetryFreq time.Duration) (*Redis, error) {
 	if kv == vk {
 		return nil, fmt.Errorf("kv and vk must be defferent. (%d, %d)", kv, vk)
 	}
@@ -51,7 +76,7 @@ func NewRedis(host, port, pass string, kv, vk int) (*Redis, error) {
 		Password: pass,
 	})
 
-	if _, err := client.Ping().Result(); err != nil {
+	if err := loopPing(client, pingTimeout, pingRetryFreq); err != nil {
 		return nil, err
 	}
 

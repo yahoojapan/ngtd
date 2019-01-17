@@ -22,6 +22,7 @@ import (
 	_ "net/http/pprof"
 	"os"
 	"runtime"
+	"time"
 
 	"github.com/kpango/glg"
 	_ "github.com/mattn/go-sqlite3"
@@ -103,6 +104,16 @@ func main() {
 				Name:  "redis-database-index, I",
 				Usage: "list up 2 redis database indexes",
 			},
+			cli.IntFlag{
+				Name:  "redis-ping-timeout",
+				Value: 600,
+				Usage: "wait until redis finish loading dump.rdb or timeout. (unit=second)",
+			},
+			cli.IntFlag{
+				Name:  "redis-ping-retry-freq",
+				Value: 10,
+				Usage: "try ping this frequency. (unit=second)",
+			},
 		}
 
 		return append(commonFlags, f...)
@@ -116,7 +127,15 @@ func main() {
 			if len(indexes) == 0 {
 				indexes = cli.IntSlice{0, 1}
 			}
-			return kvs.NewRedis(c.String("redis-host"), c.String("redis-port"), c.String("redis-password"), indexes[0], indexes[1])
+			pingTimeout := c.Int("redis-ping-timeout")
+			if pingTimeout <= 0 {
+				return nil, fmt.Errorf("invalid value: redis-ping-timeout should be greater than 0: %d", pingTimeout)
+			}
+			pingRetryFreq := c.Int("redis-ping-retry-freq")
+			if pingRetryFreq <= 0 {
+				return nil, fmt.Errorf("invalid value: redis-ping-retry-freq should be greater than 0: %d", pingRetryFreq)
+			}
+			return kvs.NewRedis(c.String("redis-host"), c.String("redis-port"), c.String("redis-password"), indexes[0], indexes[1], pingTimeout*time.Second, pingRetryFreq*time.Second)
 		case "bolt":
 			return kvs.NewBoltDB(p)
 		case "golevel":
