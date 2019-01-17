@@ -1,24 +1,30 @@
-version: 2
-machine:
-  golang:
-    version: 1.11
-jobs:
-  build:
+alias:
+  default: &default
     working_directory: /go/src/github.com/yahoojapan/ngtd
     docker:
-      - image: circleci/golang:1.11
+      - image: circleci/golang:1.11.4
         environment:
-          GO15VERNDOREXPERIMENT: 1
+          GOPATH: "/go"
+          GO111MODULE: "on"
           LD_LIBRARY_PATH: /usr/local/lib
           NGT_VERSION: 1.4.5
-          GO111MODULE: "on"
+          REPO_NAME: "yahoojapan"
+          IMAGE_NAME: "ngtd"
+          GITHUB_API: "https://api.github.com/"
+          DOCKER_USER: "kpango"
       - image: redis
-    environment:
-      TEST_RESULTS: /tmp/test-results
+  setup_remote_docker: &setup_remote_docker
+    version: 18.06.0-ce
+    docker_layer_caching: true
+
+version: 2
+jobs:
+  test:
+    <<: *default
     steps:
       - checkout
-      - setup_remote_docker: 
-         docker_layer_caching: true
+      - restore_cache:
+          key: gosum-{{ .Branch }}-{{ checksum "go.sum" }}
       - run:
           name: install dependencies
           command: |
@@ -26,16 +32,196 @@ jobs:
             sudo apt-get install cmake
             sudo -E make deps
       - run:
-          name: install go tools
+          name: preparation
           command: |
-            go get -u -v github.com/jstemmer/go-junit-report
+            go mod vendor
       - run:
-          name: build
+          name: run tests
           command: |
-            mkdir -p $TEST_RESULTS
-            go build -ldflags="-s -w" -v
+            rm -rf example
+            go test -v -race -covermode=atomic -coverprofile=coverage.out ./...
+            go tool cover -html=coverage.out -o coverage.html
+            bash <(curl -s https://codecov.io/bash)
+      - store_artifacts:
+          path: ./coverage.html
+      - save_cache:
+          key: gosum-{{ .Branch }}-{{ checksum "go.sum" }}
+          paths:
+            - ./vendor
+  build:
+    <<: *default
+    steps:
+      - setup_remote_docker: *setup_remote_docker
+      - checkout
       - run:
-          name: test
+          name: check docker version
           command: |
-            trap "go-junit-report < ${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
-            ./coverage.sh | tee ${TEST_RESULTS}/go-test.out
+            docker version
+      - run:
+          name: docker image build
+          command: |
+            # env DOCKER_BUILDKIT=1 docker build -t ${REPO_NAME}/${IMAGE_NAME}:latest .
+            docker build -t ${REPO_NAME}/${IMAGE_NAME}:latest .
+      - run:
+          name: save image
+          command: |
+            docker image save ${REPO_NAME}/${IMAGE_NAME}:latest > ./docker-image.tar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  publish_nightly:
+    <<: *default
+    steps:
+      - setup_remote_docker: *setup_remote_docker
+      - attach_workspace:
+          at: .
+      - run:
+          name: load image from tar
+          command: |
+            docker load -i ./docker-image.tar
+      - run:
+          name: tag to latest
+          command: |
+            docker tag ${REPO_NAME}/${IMAGE_NAME}:latest ${REPO_NAME}/${IMAGE_NAME}:nightly
+      - run:
+          name: docker login
+          command: |
+            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run:
+          name: push image to registory
+          command: |
+            docker push ${REPO_NAME}/${IMAGE_NAME}
+  publish:
+    <<: *default
+    steps:
+      - setup_remote_docker: *setup_remote_docker
+      - attach_workspace:
+          at: .
+      - run:
+          name: load image from tar
+          command: |
+            docker load -i ./docker-image.tar
+      - run:
+          name: tag to latest
+          command: |
+            docker tag ${REPO_NAME}/${IMAGE_NAME}:latest ${REPO_NAME}/${IMAGE_NAME}:$CIRCLE_TAG
+      - run:
+          name: docker login
+          command: |
+            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run:
+          name: push image to registory
+          command: |
+            docker push ${REPO_NAME}/${IMAGE_NAME}
+  versioning:
+    <<: *default
+    steps:
+      - checkout
+      - run:
+          name: check
+          command: |
+            mkdir -p $HOME/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+            LAST_COMMIT=`git log -1 --pretty=%B`
+            VERSION=`git describe --abbrev=0 --tags`
+            touch ./.tag
+            if [ ! -z "`git diff $VERSION`" -o -z "$VERSION" ]; then
+              VERSION=${VERSION:-'0.0.0'}
+              MAJOR="${VERSION%%.*}"; VERSION="${VERSION#*.}"
+              MINOR="${VERSION%%.*}"; VERSION="${VERSION#*.}"
+              PATCH="${VERSION%%.*}"; VERSION="${VERSION#*.}"
+              if echo $LAST_COMMIT | grep "\[\(major\|MAJOR\)\]" > /dev/null; then
+                MAJOR=$((MAJOR+1))
+                echo "$MAJOR.0.0" > ./.tag
+              elif echo $LAST_COMMIT | grep "\[\(minor\|MINOR\)\]" > /dev/null; then
+                MINOR=$((MINOR+1))
+                echo "$MAJOR.$MINOR.0" > ./.tag
+              elif echo $LAST_COMMIT | grep "\[\(patch\|PATCH\)\]" > /dev/null; then
+                PATCH=$((PATCH+1))
+                echo "$MAJOR.$MINOR.$PATCH" > ./.tag
+              fi
+            fi
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  push:
+    <<: *default
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: push tag and check PR body
+          command: |
+            mkdir -p $HOME/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+            TAG=`cat ./.tag`
+            if [ ! -z "$TAG" ]; then
+              echo $TAG
+              git tag $TAG
+              git push https://${GITHUB_ACCESS_TOKEN}:x-oauth-basic@github.com/${REPO_NAME}/${IMAGE_NAME} --tags
+              # git push git@github.com:${REPO_NAME}/${IMAGE_NAME} --tags
+            fi
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  gh_release:
+    <<: *default
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: release
+          command: |
+            mkdir -p $HOME/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+            TAG=`cat ./.tag`
+            if [ ! -z "$TAG" ]; then
+              echo "Create release: ${TAG}"
+              curl -H "Authorization: token ${GITHUB_ACCESS_TOKEN}" \
+                   -X POST \
+                   -d "{\"tag_name\": \"${TAG}\"}" \
+                   ${GITHUB_API}repos/${REPO_NAME}/${IMAGE_NAME}/releases
+            fi
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - test
+      - build
+      - publish_nightly:
+          requires:
+            - test
+            - build
+          filters:
+            branches:
+              only:
+                - master
+      - versioning:
+          filters:
+            branches:
+              only:
+                - master
+      - push:
+          requires:
+            - versioning
+      - gh_release:
+          requires:
+            - push
+  release:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+\.[0-9]+\.[0-9]+/
+      - publish:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+\.[0-9]+\.[0-9]+/
+
