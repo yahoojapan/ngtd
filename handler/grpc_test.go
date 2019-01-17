@@ -22,8 +22,8 @@ import (
 
 	"golang.org/x/net/context"
 
-	pb "github.com/yahoojapan/ngtd/proto"
 	"github.com/yahoojapan/gongt"
+	pb "github.com/yahoojapan/ngtd/proto"
 )
 
 func TestGRPC(t *testing.T) {
@@ -41,7 +41,7 @@ func TestGRPC(t *testing.T) {
 			{[]float64{0, 0, 0, 0, 1, 0}, pb.ObjectDistance{Id:[]byte("e"), Distance:0}},
 			{[]float64{0, 0, 0, 0, 0, 1}, pb.ObjectDistance{Id:[]byte("f"), Distance:0}},
 		}
-		
+
 		for _, tt := range tests {
 			req := &pb.SearchRequest{Vector: tt.vector, Size_: 1, Epsilon: gongt.DefaultEpsilon}
 			res, err := s.Search(context.Background(), req)
@@ -118,6 +118,30 @@ func TestGRPC(t *testing.T) {
 			_, err := s.Remove(context.Background(), req)
 			if err != nil {
 				t.Errorf("Unexpected error: TestRemove(%v)", err)
+			}
+		}
+	})
+
+	t.Run("TestGetObject", func(t *testing.T) {
+		defer SetupWithTeardown(t)()
+		s := GRPC{}
+		tests := []struct {
+			id   string
+			want pb.GetObjectResponse
+		}{
+			{"a", pb.GetObjectResponse{Id: []byte("a"), Vector: []float32{1, 0, 0, 0, 0, 0}}},
+			{"b", pb.GetObjectResponse{Id: []byte("b"), Vector: []float32{0, 1, 0, 0, 0, 0}}},
+		}
+
+		for _, tt := range tests {
+			req := &pb.GetObjectRequest{Id: []byte(tt.id)}
+			res, err := s.GetObject(context.Background(), req)
+			if err != nil {
+				t.Errorf("Unexpected error: TestGetObject(%v)", err)
+			}
+
+			if !reflect.DeepEqual(res.Id, tt.want.Id) || !reflect.DeepEqual(res.Vector, tt.want.Vector) {
+				t.Errorf("TestGetObject(%v): %v, wanted: %v", tt.id, res.Vector, tt.want)
 			}
 		}
 	})

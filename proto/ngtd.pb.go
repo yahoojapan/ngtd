@@ -542,6 +542,116 @@ func (m *GetDimensionResponse) GetDimension() int32 {
 	return 0
 }
 
+type GetObjectRequest struct {
+	Id                   []byte   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetObjectRequest) Reset()         { *m = GetObjectRequest{} }
+func (m *GetObjectRequest) String() string { return proto.CompactTextString(m) }
+func (*GetObjectRequest) ProtoMessage()    {}
+func (*GetObjectRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_af2a3ceaadf6e6af, []int{10}
+}
+func (m *GetObjectRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetObjectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetObjectRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetObjectRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetObjectRequest.Merge(m, src)
+}
+func (m *GetObjectRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetObjectRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetObjectRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetObjectRequest proto.InternalMessageInfo
+
+func (m *GetObjectRequest) GetId() []byte {
+	if m != nil {
+		return m.Id
+	}
+	return nil
+}
+
+type GetObjectResponse struct {
+	Id                   []byte    `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Vector               []float32 `protobuf:"fixed32,2,rep,packed,name=vector,proto3" json:"vector,omitempty"`
+	Error                string    `protobuf:"bytes,99,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
+}
+
+func (m *GetObjectResponse) Reset()         { *m = GetObjectResponse{} }
+func (m *GetObjectResponse) String() string { return proto.CompactTextString(m) }
+func (*GetObjectResponse) ProtoMessage()    {}
+func (*GetObjectResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_af2a3ceaadf6e6af, []int{11}
+}
+func (m *GetObjectResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetObjectResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetObjectResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetObjectResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetObjectResponse.Merge(m, src)
+}
+func (m *GetObjectResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetObjectResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetObjectResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetObjectResponse proto.InternalMessageInfo
+
+func (m *GetObjectResponse) GetId() []byte {
+	if m != nil {
+		return m.Id
+	}
+	return nil
+}
+
+func (m *GetObjectResponse) GetVector() []float32 {
+	if m != nil {
+		return m.Vector
+	}
+	return nil
+}
+
+func (m *GetObjectResponse) GetError() string {
+	if m != nil {
+		return m.Error
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*Empty)(nil), "ngtd.Empty")
 	proto.RegisterType((*SearchRequest)(nil), "ngtd.SearchRequest")
@@ -553,43 +663,49 @@ func init() {
 	proto.RegisterType((*RemoveResponse)(nil), "ngtd.RemoveResponse")
 	proto.RegisterType((*CreateIndexRequest)(nil), "ngtd.CreateIndexRequest")
 	proto.RegisterType((*GetDimensionResponse)(nil), "ngtd.GetDimensionResponse")
+	proto.RegisterType((*GetObjectRequest)(nil), "ngtd.GetObjectRequest")
+	proto.RegisterType((*GetObjectResponse)(nil), "ngtd.GetObjectResponse")
 }
 
 func init() { proto.RegisterFile("proto/ngtd.proto", fileDescriptor_af2a3ceaadf6e6af) }
 
 var fileDescriptor_af2a3ceaadf6e6af = []byte{
-	// 492 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0xcd, 0x6e, 0xd3, 0x40,
-	0x10, 0xce, 0x9a, 0xd8, 0x6d, 0x26, 0x3f, 0x8a, 0x96, 0x08, 0x59, 0x01, 0x05, 0xcb, 0x07, 0xf0,
-	0x01, 0x15, 0x28, 0x14, 0xd4, 0x13, 0x52, 0x1b, 0x54, 0xe5, 0x02, 0xd2, 0xa6, 0x77, 0xe4, 0xda,
-	0x23, 0x30, 0x4a, 0xbc, 0x66, 0x77, 0x1b, 0xd1, 0x3e, 0x02, 0x4f, 0xc0, 0x23, 0x71, 0xe4, 0x11,
-	0x50, 0x78, 0x11, 0x94, 0x5d, 0x6f, 0xb0, 0x4b, 0xa8, 0x94, 0xdc, 0x76, 0x7e, 0xbe, 0xef, 0x1b,
-	0xcf, 0x7c, 0x32, 0xf4, 0x0b, 0xc1, 0x15, 0x7f, 0x9a, 0x7f, 0x54, 0xe9, 0x81, 0x7e, 0xd2, 0xe6,
-	0xea, 0x1d, 0xee, 0x81, 0xfb, 0x76, 0x5e, 0xa8, 0xab, 0x10, 0xa1, 0x3b, 0xc5, 0x58, 0x24, 0x9f,
-	0x18, 0x7e, 0xb9, 0x44, 0xa9, 0xe8, 0x3d, 0xf0, 0x16, 0x98, 0x28, 0x2e, 0x7c, 0x12, 0xdc, 0x89,
-	0x08, 0x2b, 0x23, 0xda, 0x03, 0x27, 0x4b, 0x7d, 0x27, 0x20, 0x51, 0x87, 0x39, 0x59, 0x4a, 0x29,
-	0x34, 0x65, 0x76, 0x8d, 0x3e, 0x04, 0x24, 0x72, 0x99, 0x7e, 0x53, 0x1f, 0xf6, 0xb0, 0x90, 0xd9,
-	0x8c, 0xe7, 0x7e, 0x3b, 0x20, 0x91, 0xc3, 0x6c, 0x18, 0x32, 0xe8, 0xbd, 0xbf, 0xf8, 0x8c, 0x89,
-	0x1a, 0x67, 0x52, 0xc5, 0x79, 0x82, 0x25, 0x1f, 0x59, 0xf3, 0x0d, 0x61, 0x3f, 0x2d, 0x6b, 0x9a,
-	0xd3, 0x61, 0xeb, 0x98, 0x0e, 0xc0, 0x45, 0x21, 0xb8, 0xf0, 0x93, 0x80, 0x44, 0x2d, 0x66, 0x82,
-	0xf0, 0x1c, 0x7a, 0x76, 0x74, 0x59, 0xf0, 0x5c, 0x22, 0x7d, 0x02, 0x9e, 0x40, 0x79, 0x39, 0x53,
-	0x7a, 0xf6, 0xf6, 0xe1, 0xe0, 0x40, 0x7f, 0x78, 0x5d, 0x99, 0x95, 0x3d, 0xff, 0x61, 0x7d, 0x0d,
-	0xdd, 0x49, 0x2e, 0x51, 0xa8, 0x2d, 0x17, 0x12, 0x3e, 0x82, 0x9e, 0x05, 0x96, 0xe3, 0x6c, 0x16,
-	0x78, 0x08, 0x5d, 0x86, 0x73, 0xbe, 0x40, 0x2b, 0x70, 0x63, 0x13, 0x2b, 0x22, 0xdb, 0x70, 0x2b,
-	0xd1, 0x73, 0xa0, 0xa7, 0x02, 0x63, 0x85, 0x93, 0x3c, 0xc5, 0xaf, 0x96, 0xed, 0x3e, 0xb4, 0x0a,
-	0xce, 0x67, 0x1f, 0xf4, 0x71, 0x56, 0xa4, 0x5d, 0xb6, 0xbf, 0x4a, 0x4c, 0xb3, 0x6b, 0x0c, 0x5f,
-	0xc2, 0xe0, 0x0c, 0xd5, 0x38, 0x9b, 0x63, 0x2e, 0x33, 0x9e, 0xaf, 0x05, 0x1e, 0x40, 0x2b, 0xb5,
-	0x49, 0x0d, 0x72, 0xd9, 0xdf, 0xc4, 0xe1, 0x37, 0x17, 0x9a, 0xef, 0xce, 0xce, 0xc7, 0xf4, 0x08,
-	0x3c, 0xb3, 0x71, 0x7a, 0xd7, 0x6c, 0xb6, 0x66, 0x9d, 0xe1, 0xa0, 0x9e, 0x34, 0xdc, 0x61, 0x83,
-	0x1e, 0x03, 0x98, 0xdc, 0xc9, 0xd5, 0x64, 0xbc, 0x1d, 0xf4, 0x0d, 0x74, 0xa6, 0x4a, 0x60, 0x3c,
-	0xdf, 0x41, 0x37, 0x22, 0xcf, 0x08, 0x3d, 0x85, 0x7e, 0x95, 0x60, 0xeb, 0x09, 0x34, 0xc9, 0x11,
-	0x78, 0xe6, 0xb4, 0x16, 0x5a, 0x73, 0x88, 0x85, 0xd6, 0xaf, 0x5f, 0x1d, 0x7e, 0x07, 0xb0, 0xd5,
-	0x35, 0x4e, 0xb0, 0xd0, 0x9a, 0x71, 0x2c, 0xb4, 0x6e, 0x96, 0xaa, 0xee, 0x0e, 0x60, 0xad, 0xfb,
-	0x0a, 0xda, 0x15, 0x67, 0x51, 0xdf, 0xb4, 0xfe, 0x6b, 0xb6, 0x61, 0xdb, 0x54, 0xcc, 0xaf, 0xa4,
-	0x41, 0x1f, 0x43, 0x6b, 0x1a, 0x2f, 0x4a, 0x54, 0xb5, 0x76, 0xb3, 0xf1, 0x18, 0x3a, 0x55, 0x1f,
-	0xd6, 0x7b, 0x87, 0x26, 0xd8, 0x64, 0xd4, 0xb0, 0x71, 0xd2, 0xff, 0xb1, 0x1c, 0x91, 0x9f, 0xcb,
-	0x11, 0xf9, 0xb5, 0x1c, 0x91, 0xef, 0xbf, 0x47, 0x8d, 0x0b, 0x4f, 0xff, 0xd8, 0x5e, 0xfc, 0x09,
-	0x00, 0x00, 0xff, 0xff, 0x92, 0xfa, 0xcd, 0x03, 0xec, 0x04, 0x00, 0x00,
+	// 549 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x54, 0x4f, 0x6f, 0xd3, 0x30,
+	0x14, 0xaf, 0xb3, 0x36, 0x5b, 0x5f, 0xff, 0x50, 0x4c, 0x35, 0xa2, 0x82, 0x4a, 0x94, 0x03, 0xe4,
+	0x80, 0x06, 0x0c, 0x06, 0xda, 0x05, 0xa4, 0xad, 0xa8, 0xf4, 0x02, 0xc2, 0xdd, 0x1d, 0x75, 0xcd,
+	0x13, 0x04, 0xb5, 0x71, 0x70, 0xbc, 0x8a, 0xed, 0x73, 0x70, 0xe0, 0x23, 0x71, 0xe4, 0x23, 0xa0,
+	0xf2, 0x45, 0x50, 0xed, 0x38, 0x4b, 0xda, 0x0d, 0xa9, 0xdd, 0xcd, 0x7e, 0x7e, 0xbf, 0x3f, 0x79,
+	0xfe, 0x39, 0xd0, 0x8a, 0x05, 0x97, 0xfc, 0x49, 0xf4, 0x59, 0x06, 0x7b, 0x6a, 0x49, 0xcb, 0x8b,
+	0xb5, 0xb7, 0x0d, 0x95, 0xb7, 0xd3, 0x58, 0x9e, 0x7b, 0x08, 0x8d, 0x21, 0x8e, 0xc4, 0xf8, 0x0b,
+	0xc3, 0x6f, 0x67, 0x98, 0x48, 0xba, 0x0b, 0xf6, 0x0c, 0xc7, 0x92, 0x0b, 0x87, 0xb8, 0x5b, 0x3e,
+	0x61, 0xe9, 0x8e, 0x36, 0xc1, 0x0a, 0x03, 0xc7, 0x72, 0x89, 0x5f, 0x67, 0x56, 0x18, 0x50, 0x0a,
+	0xe5, 0x24, 0xbc, 0x40, 0x07, 0x5c, 0xe2, 0x57, 0x98, 0x5a, 0x53, 0x07, 0xb6, 0x31, 0x4e, 0xc2,
+	0x09, 0x8f, 0x9c, 0x9a, 0x4b, 0x7c, 0x8b, 0x99, 0xad, 0xc7, 0xa0, 0xf9, 0xe1, 0xf4, 0x2b, 0x8e,
+	0x65, 0x2f, 0x4c, 0xe4, 0x28, 0x1a, 0x63, 0xca, 0x47, 0x32, 0xbe, 0x0e, 0xec, 0x04, 0xe9, 0x99,
+	0xe2, 0xb4, 0x58, 0xb6, 0xa7, 0x6d, 0xa8, 0xa0, 0x10, 0x5c, 0x38, 0x63, 0x97, 0xf8, 0x55, 0xa6,
+	0x37, 0xde, 0x09, 0x34, 0x8d, 0xf5, 0x24, 0xe6, 0x51, 0x82, 0xf4, 0x31, 0xd8, 0x02, 0x93, 0xb3,
+	0x89, 0x54, 0xde, 0x6b, 0xfb, 0xed, 0x3d, 0xf5, 0xe1, 0x45, 0x65, 0x96, 0xf6, 0x5c, 0xc3, 0xfa,
+	0x0a, 0x1a, 0x83, 0x28, 0x41, 0x21, 0xd7, 0x1c, 0x88, 0xf7, 0x10, 0x9a, 0x06, 0x98, 0xda, 0xb9,
+	0x5a, 0xe0, 0x01, 0x34, 0x18, 0x4e, 0xf9, 0x0c, 0x8d, 0xc0, 0xd2, 0x24, 0x16, 0x44, 0xa6, 0xe1,
+	0xbf, 0x44, 0xcf, 0x80, 0x1e, 0x0b, 0x1c, 0x49, 0x1c, 0x44, 0x01, 0x7e, 0x37, 0x6c, 0xf7, 0xa0,
+	0x1a, 0x73, 0x3e, 0xf9, 0xa4, 0x2e, 0x67, 0x41, 0xda, 0x60, 0x3b, 0x8b, 0xc2, 0x30, 0xbc, 0x40,
+	0xef, 0x05, 0xb4, 0xfb, 0x28, 0x7b, 0xe1, 0x14, 0xa3, 0x24, 0xe4, 0x51, 0x26, 0x70, 0x1f, 0xaa,
+	0x81, 0x29, 0x2a, 0x50, 0x85, 0x5d, 0x16, 0x3c, 0x0f, 0x5a, 0x7d, 0x94, 0x7a, 0x8a, 0xd7, 0x99,
+	0xfe, 0x08, 0xb7, 0x73, 0x3d, 0x29, 0xed, 0xf2, 0x1d, 0x5f, 0x8e, 0xd2, 0x72, 0xb7, 0x7c, 0x2b,
+	0x1b, 0xe5, 0x95, 0xdf, 0xb7, 0xff, 0xc3, 0x86, 0xf2, 0xfb, 0xfe, 0x49, 0x8f, 0x1e, 0x80, 0xad,
+	0x2f, 0x9a, 0xde, 0xd1, 0x17, 0x5a, 0x48, 0x6c, 0xa7, 0x5d, 0x2c, 0x6a, 0x6d, 0xaf, 0x44, 0x0f,
+	0x01, 0x74, 0xed, 0xe8, 0x7c, 0xd0, 0x5b, 0x0f, 0xfa, 0x06, 0xea, 0x43, 0x29, 0x70, 0x34, 0xdd,
+	0x40, 0xd7, 0x27, 0x4f, 0x09, 0x3d, 0x86, 0x56, 0x9e, 0x60, 0x6d, 0x07, 0x8a, 0xe4, 0x00, 0x6c,
+	0x9d, 0x28, 0x03, 0x2d, 0x04, 0xd3, 0x40, 0x8b, 0xa1, 0xcb, 0x9b, 0xdf, 0x00, 0x6c, 0x74, 0x75,
+	0x00, 0x0d, 0xb4, 0x90, 0x57, 0x03, 0x2d, 0x66, 0x34, 0xaf, 0xbb, 0x01, 0x58, 0xe9, 0xbe, 0x86,
+	0x6a, 0x96, 0x21, 0xba, 0xab, 0x1b, 0x97, 0x83, 0xd7, 0xb9, 0xbb, 0x52, 0xcf, 0x0c, 0xbc, 0x83,
+	0x5b, 0xda, 0xc0, 0x4d, 0x58, 0x94, 0x93, 0x97, 0x50, 0xcb, 0x3d, 0x2d, 0xea, 0xe8, 0xee, 0xd5,
+	0xd7, 0xd6, 0xa9, 0xe9, 0x13, 0xfd, 0x2f, 0x2d, 0xd1, 0x47, 0x50, 0x1d, 0x8e, 0x66, 0x29, 0x2a,
+	0x7f, 0xb6, 0xdc, 0x78, 0x08, 0xf5, 0xfc, 0x43, 0x2c, 0xf6, 0x76, 0x32, 0x73, 0x2b, 0x2f, 0xd5,
+	0x2b, 0x1d, 0xb5, 0x7e, 0xcd, 0xbb, 0xe4, 0xf7, 0xbc, 0x4b, 0xfe, 0xcc, 0xbb, 0xe4, 0xe7, 0xdf,
+	0x6e, 0xe9, 0xd4, 0x56, 0x7f, 0xf6, 0xe7, 0xff, 0x02, 0x00, 0x00, 0xff, 0xff, 0x86, 0xcd, 0x58,
+	0xa8, 0xed, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -612,6 +728,8 @@ type NGTDClient interface {
 	StreamInsert(ctx context.Context, opts ...grpc.CallOption) (NGTD_StreamInsertClient, error)
 	Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*RemoveResponse, error)
 	StreamRemove(ctx context.Context, opts ...grpc.CallOption) (NGTD_StreamRemoveClient, error)
+	GetObject(ctx context.Context, in *GetObjectRequest, opts ...grpc.CallOption) (*GetObjectResponse, error)
+	StreamGetObject(ctx context.Context, opts ...grpc.CallOption) (NGTD_StreamGetObjectClient, error)
 	CreateIndex(ctx context.Context, in *CreateIndexRequest, opts ...grpc.CallOption) (*Empty, error)
 	SaveIndex(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
 	GetDimension(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetDimensionResponse, error)
@@ -785,6 +903,46 @@ func (x *nGTDStreamRemoveClient) Recv() (*RemoveResponse, error) {
 	return m, nil
 }
 
+func (c *nGTDClient) GetObject(ctx context.Context, in *GetObjectRequest, opts ...grpc.CallOption) (*GetObjectResponse, error) {
+	out := new(GetObjectResponse)
+	err := c.cc.Invoke(ctx, "/ngtd.NGTD/GetObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *nGTDClient) StreamGetObject(ctx context.Context, opts ...grpc.CallOption) (NGTD_StreamGetObjectClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_NGTD_serviceDesc.Streams[4], "/ngtd.NGTD/StreamGetObject", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &nGTDStreamGetObjectClient{stream}
+	return x, nil
+}
+
+type NGTD_StreamGetObjectClient interface {
+	Send(*GetObjectRequest) error
+	Recv() (*GetObjectResponse, error)
+	grpc.ClientStream
+}
+
+type nGTDStreamGetObjectClient struct {
+	grpc.ClientStream
+}
+
+func (x *nGTDStreamGetObjectClient) Send(m *GetObjectRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *nGTDStreamGetObjectClient) Recv() (*GetObjectResponse, error) {
+	m := new(GetObjectResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *nGTDClient) CreateIndex(ctx context.Context, in *CreateIndexRequest, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/ngtd.NGTD/CreateIndex", in, out, opts...)
@@ -822,6 +980,8 @@ type NGTDServer interface {
 	StreamInsert(NGTD_StreamInsertServer) error
 	Remove(context.Context, *RemoveRequest) (*RemoveResponse, error)
 	StreamRemove(NGTD_StreamRemoveServer) error
+	GetObject(context.Context, *GetObjectRequest) (*GetObjectResponse, error)
+	StreamGetObject(NGTD_StreamGetObjectServer) error
 	CreateIndex(context.Context, *CreateIndexRequest) (*Empty, error)
 	SaveIndex(context.Context, *Empty) (*Empty, error)
 	GetDimension(context.Context, *Empty) (*GetDimensionResponse, error)
@@ -1007,6 +1167,50 @@ func (x *nGTDStreamRemoveServer) Recv() (*RemoveRequest, error) {
 	return m, nil
 }
 
+func _NGTD_GetObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NGTDServer).GetObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ngtd.NGTD/GetObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NGTDServer).GetObject(ctx, req.(*GetObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NGTD_StreamGetObject_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(NGTDServer).StreamGetObject(&nGTDStreamGetObjectServer{stream})
+}
+
+type NGTD_StreamGetObjectServer interface {
+	Send(*GetObjectResponse) error
+	Recv() (*GetObjectRequest, error)
+	grpc.ServerStream
+}
+
+type nGTDStreamGetObjectServer struct {
+	grpc.ServerStream
+}
+
+func (x *nGTDStreamGetObjectServer) Send(m *GetObjectResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *nGTDStreamGetObjectServer) Recv() (*GetObjectRequest, error) {
+	m := new(GetObjectRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func _NGTD_CreateIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateIndexRequest)
 	if err := dec(in); err != nil {
@@ -1082,6 +1286,10 @@ var _NGTD_serviceDesc = grpc.ServiceDesc{
 			Handler:    _NGTD_Remove_Handler,
 		},
 		{
+			MethodName: "GetObject",
+			Handler:    _NGTD_GetObject_Handler,
+		},
+		{
 			MethodName: "CreateIndex",
 			Handler:    _NGTD_CreateIndex_Handler,
 		},
@@ -1116,6 +1324,12 @@ var _NGTD_serviceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "StreamRemove",
 			Handler:       _NGTD_StreamRemove_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "StreamGetObject",
+			Handler:       _NGTD_StreamGetObject_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
@@ -1448,6 +1662,78 @@ func (m *GetDimensionResponse) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *GetObjectRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetObjectRequest) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Id) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintNgtd(dAtA, i, uint64(len(m.Id)))
+		i += copy(dAtA[i:], m.Id)
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *GetObjectResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetObjectResponse) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Id) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintNgtd(dAtA, i, uint64(len(m.Id)))
+		i += copy(dAtA[i:], m.Id)
+	}
+	if len(m.Vector) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintNgtd(dAtA, i, uint64(len(m.Vector)*4))
+		for _, num := range m.Vector {
+			f3 := math.Float32bits(float32(num))
+			encoding_binary.LittleEndian.PutUint32(dAtA[i:], uint32(f3))
+			i += 4
+		}
+	}
+	if len(m.Error) > 0 {
+		dAtA[i] = 0x9a
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintNgtd(dAtA, i, uint64(len(m.Error)))
+		i += copy(dAtA[i:], m.Error)
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
 func encodeVarintNgtd(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -1629,6 +1915,45 @@ func (m *GetDimensionResponse) Size() (n int) {
 	_ = l
 	if m.Dimension != 0 {
 		n += 1 + sovNgtd(uint64(m.Dimension))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *GetObjectRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovNgtd(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *GetObjectResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovNgtd(uint64(l))
+	}
+	if len(m.Vector) > 0 {
+		n += 1 + sovNgtd(uint64(len(m.Vector)*4)) + len(m.Vector)*4
+	}
+	l = len(m.Error)
+	if l > 0 {
+		n += 2 + l + sovNgtd(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -2589,6 +2914,250 @@ func (m *GetDimensionResponse) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipNgtd(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthNgtd
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetObjectRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowNgtd
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetObjectRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetObjectRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowNgtd
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthNgtd
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = append(m.Id[:0], dAtA[iNdEx:postIndex]...)
+			if m.Id == nil {
+				m.Id = []byte{}
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipNgtd(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthNgtd
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetObjectResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowNgtd
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetObjectResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetObjectResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowNgtd
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthNgtd
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = append(m.Id[:0], dAtA[iNdEx:postIndex]...)
+			if m.Id == nil {
+				m.Id = []byte{}
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType == 5 {
+				var v uint32
+				if (iNdEx + 4) > l {
+					return io.ErrUnexpectedEOF
+				}
+				v = uint32(encoding_binary.LittleEndian.Uint32(dAtA[iNdEx:]))
+				iNdEx += 4
+				v2 := float32(math.Float32frombits(v))
+				m.Vector = append(m.Vector, v2)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowNgtd
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= (int(b) & 0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthNgtd
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				elementCount = packedLen / 4
+				if elementCount != 0 && len(m.Vector) == 0 {
+					m.Vector = make([]float32, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v uint32
+					if (iNdEx + 4) > l {
+						return io.ErrUnexpectedEOF
+					}
+					v = uint32(encoding_binary.LittleEndian.Uint32(dAtA[iNdEx:]))
+					iNdEx += 4
+					v2 := float32(math.Float32frombits(v))
+					m.Vector = append(m.Vector, v2)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field Vector", wireType)
+			}
+		case 99:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowNgtd
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthNgtd
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Error = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipNgtd(dAtA[iNdEx:])

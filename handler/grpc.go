@@ -126,6 +126,33 @@ func (g *GRPC) StreamRemove(srv pb.NGTD_StreamRemoveServer) error {
 	}
 }
 
+// GetObject returns vector.
+func (g *GRPC) GetObject(ctx context.Context, in *pb.GetObjectRequest) (*pb.GetObjectResponse, error) {
+	result, err := service.GetObject(in.Id)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.GetObjectResponse{Id: result.Id, Vector: result.Vector}, nil
+}
+
+// StreamGetObject returns vector stream.
+func (g *GRPC) StreamGetObject(srv pb.NGTD_StreamGetObjectServer) error {
+	for {
+		in, err := srv.Recv()
+		if err == io.EOF {
+			return nil
+		} else if err != nil {
+			return err
+		}
+		result, err := service.GetObject(in.Id)
+		if err != nil {
+			srv.Send(&pb.GetObjectResponse{Error: err.Error()})
+		} else {
+			srv.Send(&pb.GetObjectResponse{Id: result.Id, Vector: result.Vector})
+		}
+	}
+}
+
 func (g *GRPC) CreateIndex(ctx context.Context, in *pb.CreateIndexRequest) (*pb.Empty, error) {
 	if err := gongt.CreateIndex(int(in.PoolSize)); err != nil {
 		return nil, err
