@@ -25,8 +25,7 @@ import (
 )
 
 const (
-	base      = 36
-	pingSleep = 10 * time.Second
+	base = 36
 )
 
 func toRedisVal(v uint) string {
@@ -44,21 +43,31 @@ type Redis struct {
 	vk     int
 }
 
-func loopPing(client *redis.Client, numRetry int) error {
+func loopPing(client *redis.Client, timeout, retryFreq time.Duration) error {
+	end := time.NewTicker(timeout)
+	tick := time.NewTicker(retryFreq)
+
+	defer func() {
+		end.Stop()
+		tick.Stop()
+	}()
+
 	var err error
-	for i := 0; i < numRetry; i++ {
-		_, err = client.Ping().Result()
-		if err != nil {
-			time.Sleep(pingSleep)
-		} else {
-			return nil
+	for {
+		select {
+		case <-end.C:
+			return err
+		case <-tick.C:
+			_, err = client.Ping().Result()
+			if err == nil {
+				return nil
+			}
 		}
 	}
-	return err
 }
 
 // NewRedis initializes Redis
-func NewRedis(host, port, pass string, kv, vk int, pingMaxRetry int) (*Redis, error) {
+func NewRedis(host, port, pass string, kv, vk int, pingTimeout, pingRetryFreq time.Duration) (*Redis, error) {
 	if kv == vk {
 		return nil, fmt.Errorf("kv and vk must be defferent. (%d, %d)", kv, vk)
 	}
@@ -67,7 +76,7 @@ func NewRedis(host, port, pass string, kv, vk int, pingMaxRetry int) (*Redis, er
 		Password: pass,
 	})
 
-	if err := loopPing(client, pingMaxRetry); err != nil {
+	if err := loopPing(client, pingTimeout, pingRetryFreq); err != nil {
 		return nil, err
 	}
 
