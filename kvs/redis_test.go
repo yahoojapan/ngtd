@@ -19,11 +19,11 @@ package kvs
 import (
 	"os"
 	"testing"
+	"time"
 )
 
 func initRedis(t *testing.T) *Redis {
-	pingMaxRetry := 1
-	r, err := NewRedis("127.0.0.1", "6379", "", 0, 1, pingMaxRetry)
+	r, err := NewRedis("127.0.0.1", "6379", "", 0, 1, time.Second, time.Second*300)
 	if err != nil {
 		t.Fatalf("Unexpected Error: initRedis(): %v", err)
 	}
