@@ -1,4 +1,4 @@
-FROM ubuntu:16.04 AS builder
+FROM ubuntu:latest AS builder
 
 ENV APP_NAME ngtd
 
@@ -47,7 +47,6 @@ RUN CGO_ENABLED=1 \
 FROM scratch
 LABEL maintainer "kpango <i.can.feel.gravity@gmail.com>, Kosuke Morimoto <kou.morimoto@gmail.com>"
 
-ENV APP_USER ngtd-user
 ENV APP_NAME ngtd
 
 # Copy certificates for SSL/TLS
