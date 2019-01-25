@@ -23,12 +23,22 @@ import (
 	"github.com/kpango/glg"
 )
 
+// NewRouter returns routed handler
 func NewRouter() *mux.Router {
+	return newRouter(routes)
+}
+
+// NewPprofRouter returns profile handler
+func NewPprofRouter() *mux.Router {
+	return newRouter(profiles)
+}
+
+func newRouter(rs []Route) *mux.Router {
 	http.DefaultTransport.(*http.Transport).MaxIdleConnsPerHost = 32
 
 	router := mux.NewRouter().StrictSlash(true)
 
-	for _, route := range routes {
+	for _, route := range rs {
 		router.
 			Methods(route.Method).
 			Path(route.Pattern).
