@@ -80,7 +80,7 @@ func NewNGTD(index string, db kvs.KVS, port int) (*NGTD, error) {
 	return &NGTD{
 		sigCh: sigCh,
 		l:     l,
-		port:  p,
+		port:  ":" + p,
 	}, nil
 }
 
@@ -150,6 +150,10 @@ func (n *NGTD) listenAndServeGRPC() error {
 	srv.Stop()
 
 	return nil
+}
+
+func (n *NGTD) ListenAndServeProfile(port int) error {
+	return http.ListenAndServe(":"+strconv.Itoa(port), router.NewPprofRouter())
 }
 
 func (n *NGTD) Stop() {

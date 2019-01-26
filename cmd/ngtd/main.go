@@ -19,7 +19,6 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "net/http/pprof"
 	"os"
 	"runtime"
 	"time"
@@ -34,8 +33,10 @@ import (
 )
 
 var (
-	Version  = "0.0.1"
-	Revision = "first"
+	// Version is ngtd version
+	Version = "1.1.0"
+	// Revision is release revision
+	Revision = "profilable"
 
 	index     string
 	dbType    string
@@ -162,6 +163,15 @@ func main() {
 					Value: 8200,
 					Usage: "listening port",
 				},
+				cli.IntFlag{
+					Name:  "pprof-port, PP",
+					Value: 6060,
+					Usage: "listening pprof port",
+				},
+				cli.BoolFlag{
+					Name:  "pprof pp",
+					Usage: "enable pprof server",
+				},
 			}),
 			Action: func(c *cli.Context) error {
 				if dimension > 0 {
@@ -175,9 +185,10 @@ func main() {
 				if err != nil {
 					return err
 				}
-				n.ListenAndServe(t)
-
-				return nil
+				if c.Bool("pprof") {
+					n.ListenAndServeProfile(c.Int("pprof-port"))
+				}
+				return n.ListenAndServe(t)
 			},
 		}
 	}
