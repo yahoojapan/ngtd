@@ -73,14 +73,16 @@ func NewNGTD(index string, db kvs.KVS, port int) (*NGTD, error) {
 	}
 
 	p := strconv.Itoa(port)
+
 	l, err := net.Listen("tcp", ":"+p)
 	if err != nil {
 		return nil, err
 	}
+
 	return &NGTD{
 		sigCh: sigCh,
 		l:     l,
-		port:  ":" + p,
+		port:  p,
 	}, nil
 }
 
