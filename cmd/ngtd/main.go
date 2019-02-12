@@ -29,6 +29,7 @@ import (
 	"github.com/yahoojapan/ngtd"
 	"github.com/yahoojapan/ngtd/cmd/ngtd/build"
 	"github.com/yahoojapan/ngtd/kvs"
+	"golang.org/x/sync/errgroup"
 	cli "gopkg.in/urfave/cli.v1"
 )
 
@@ -185,10 +186,17 @@ func main() {
 				if err != nil {
 					return err
 				}
+				eg := new(errgroup.Group)
 				if c.Bool("pprof") {
-					n.ListenAndServeProfile(c.Int("pprof-port"))
+					eg.Go(func() error {
+						return n.ListenAndServeProfile(c.Int("pprof-port"))
+					})
 				}
-				return n.ListenAndServe(t)
+				eg.Go(func() error {
+					return n.ListenAndServe(t)
+				})
+
+				return eg.Wait()
 			},
 		}
 	}
