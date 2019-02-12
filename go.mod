@@ -5,6 +5,7 @@ require (
 	github.com/go-redis/redis v6.15.1+incompatible
 	github.com/golang/protobuf v1.2.0
 	github.com/gorilla/mux v1.7.0
+	github.com/kpango/gache v1.1.3
 	github.com/kpango/glg v1.2.7
 	github.com/mattn/go-sqlite3 v1.10.0
 	github.com/syndtr/goleveldb v0.0.0-20190203031304-2f17a3356c66

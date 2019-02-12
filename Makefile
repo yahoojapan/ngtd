@@ -5,6 +5,9 @@ REVISION := $(shell git rev-parse --short HEAD)
 
 .PHONY: build
 
+docker:
+	docker build -t yahoojapan/ngtd:latest .
+
 deps:
 	curl -LO https://github.com/yahoojapan/NGT/archive/v$(NGT_VERSION).tar.gz
 	tar zxf v$(NGT_VERSION).tar.gz -C /tmp

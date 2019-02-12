@@ -17,58 +17,49 @@
 package kvs
 
 import (
-	"io/ioutil"
 	"os"
 	"testing"
 )
 
-func initGoLevel(t *testing.T) *GoLevel {
-	dir, err := ioutil.TempDir("", dbpath)
-	if err != nil {
-		t.Fatalf("Unexpected Error: initGoLevel(): %v", err)
-	}
-	g, err := NewGoLevel(dir)
-	if err != nil {
-		t.Fatalf("Unexpected Error: initGoLevel(): %v", err)
-	}
-	return g
+func initMemory(t *testing.T) KVS {
+	return NewMemory()
 }
 
-func TestGoLevel(t *testing.T) {
+func TestMemory(t *testing.T) {
 	t.Parallel()
 	t.Run("TestGetKey", func(t *testing.T) {
-		g := initGoLevel(t)
+		g := initMemory(t)
 		defer SetupWithTeardown(g, t)()
 		GetKey(g, t)
 	})
 
 	t.Run("TestGetKeys", func(t *testing.T) {
-		g := initGoLevel(t)
+		g := initMemory(t)
 		defer SetupWithTeardown(g, t)()
 		GetKeys(g, t)
 	})
 
 	t.Run("TestGetVal", func(t *testing.T) {
-		g := initGoLevel(t)
+		g := initMemory(t)
 		defer SetupWithTeardown(g, t)()
 		GetVal(g, t)
 	})
 
 	t.Run("TestSet", func(t *testing.T) {
-		g := initGoLevel(t)
+		g := initMemory(t)
 		Set(g, t)
 		g.Close()
 		os.RemoveAll("test")
 	})
 
 	t.Run("TestDelete", func(t *testing.T) {
-		g := initGoLevel(t)
+		g := initMemory(t)
 		defer SetupWithTeardown(g, t)()
 		Delete(g, t)
 	})
 
 	t.Run("TestClose", func(t *testing.T) {
-		g := initGoLevel(t)
+		g := initMemory(t)
 		defer SetupWithTeardown(g, t)()
 		Close(g, t)
 	})

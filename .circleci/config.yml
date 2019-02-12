@@ -140,6 +140,14 @@ jobs:
                 PATCH=$((PATCH+1))
                 echo "$MAJOR.$MINOR.$PATCH" > ./.tag
               fi
+            else
+              if echo $LAST_COMMIT | grep "\[\(major\|MAJOR\)\]" > /dev/null; then
+                echo "1.0.0" > ./.tag
+              elif echo $LAST_COMMIT | grep "\[\(minor\|MINOR\)\]" > /dev/null; then
+                echo "0.1.0" > ./.tag
+              elif echo $LAST_COMMIT | grep "\[\(patch\|PATCH\)\]" > /dev/null; then
+                echo "0.0.1" > ./.tag
+              fi
             fi
       - persist_to_workspace:
           root: .

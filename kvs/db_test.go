@@ -27,10 +27,10 @@ const dbpath = "test"
 
 func TestToBytesAndToInt(t *testing.T) {
 	t.Parallel()
-	for i := uint(1); i <= 0xFFFFFFFF; i <<= 1 {		
+	for i := uint(1); i <= 0xFFFFFFFF; i <<= 1 {
 		t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
 			var I uint
-			I = ToInt(ToBytes(i-1))
+			I = ToInt(ToBytes(i - 1))
 			if i-1 != I {
 				t.Errorf("TestToBytesAndToInt(%v): %v, wanted: %v", i-1, I, i-1)
 			}
@@ -40,13 +40,13 @@ func TestToBytesAndToInt(t *testing.T) {
 				t.Errorf("TestToBytesAndToInt(%v): %v, wanted: %v", i, I, i)
 			}
 
-			I = ToInt(ToBytes(i+1))
+			I = ToInt(ToBytes(i + 1))
 			if i+1 != I {
 				t.Errorf("TestToBytesAndToInt(%v): %v, wanted: %v", i+1, I, i+1)
 			}
 		})
 	}
-	i := uint(1 << 32-1)
+	i := uint(1<<32 - 1)
 	t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
 		var I uint
 		I = ToInt(ToBytes(i))
@@ -57,7 +57,7 @@ func TestToBytesAndToInt(t *testing.T) {
 }
 
 func SetupWithTeardown(db KVS, t *testing.T) func() {
-	data := []struct{
+	data := []struct {
 		k []byte
 		v uint
 	}{

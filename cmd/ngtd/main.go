@@ -79,7 +79,7 @@ func main() {
 			cli.StringFlag{
 				Name:        "database-type, t",
 				Value:       "",
-				Usage:       "ngtd inner kvs type(redis, golevel, bolt or sqlite)",
+				Usage:       "ngtd inner kvs type(redis, golevel, bolt, sqlite or inmem)",
 				Destination: &dbType,
 			},
 			cli.StringFlag{
@@ -148,6 +148,8 @@ func main() {
 				return nil, err
 			}
 			return kvs.NewSQL(s)
+		case "inmem":
+			return kvs.NewMemory(), nil
 		default:
 			return nil, fmt.Errorf("unsupported database type: %v", dbType)
 		}
