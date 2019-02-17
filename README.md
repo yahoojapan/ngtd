@@ -1,4 +1,5 @@
 # NGTD: Serving [NGT](https://github.com/yahoojapan/NGT) over HTTP or gRPC. [![License: Apache](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0) [![release](https://img.shields.io/github/release/yahoojapan/ngtd.svg?style=flat-square)](https://github.com/yahoojapan/ngtd/releases/latest) [![CircleCI](https://circleci.com/gh/yahoojapan/ngtd.svg)](https://circleci.com/gh/yahoojapan/ngtd) [![codecov](https://codecov.io/gh/yahoojapan/ngtd/branch/master/graph/badge.svg)](https://codecov.io/gh/yahoojapan/ngtd) [![Go Report Card](https://goreportcard.com/badge/github.com/yahoojapan/ngtd)](https://goreportcard.com/report/github.com/yahoojapan/ngtd) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b03d543ee4a9448ba6d25f94f4989ba4)](https://www.codacy.com/app/i.can.feel.gravity/ngtd?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yahoojapan/ngtd&amp;utm_campaign=Badge_Grade) [![GoDoc](http://godoc.org/github.com/yahoojapan/ngtd?status.svg)](http://godoc.org/github.com/yahoojapan/ngtd) [![DepShield Badge](https://depshield.sonatype.org/badges/yahoojapan/ngtd/depshield.svg)](https://depshield.github.io)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fyahoojapan%2Fngtd.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fyahoojapan%2Fngtd?ref=badge_shield)
 
 Description
 -----------
@@ -172,3 +173,6 @@ Authors
 
 [Kosuke Morimoto](https://github.com/kou-m)  
 [kpango](https://github.com/kpango)
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fyahoojapan%2Fngtd.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fyahoojapan%2Fngtd?ref=badge_large)
