@@ -7,7 +7,7 @@ alias:
           GOPATH: "/go"
           GO111MODULE: "on"
           LD_LIBRARY_PATH: /usr/local/lib
-          NGT_VERSION: 1.6.1
+          NGT_VERSION: 1.7.0
           REPO_NAME: "yahoojapan"
           IMAGE_NAME: "ngtd"
           GITHUB_API: "https://api.github.com/"

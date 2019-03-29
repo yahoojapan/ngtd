@@ -74,7 +74,7 @@ func Search(vector []float64, size int, epsilon float32) ([]SearchResult, error)
 }
 
 func (s *Service) Search(vector []float64, size int, epsilon float32) ([]SearchResult, error) {
-	result, err := gongt.StrictSearch(vector, size, epsilon)
+	result, err := gongt.StrictSearch(vector, size, epsilon, -1.0)
 	if err != nil {
 		return nil, err
 	}
