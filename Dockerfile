@@ -2,7 +2,7 @@ FROM ubuntu:latest AS builder
 
 ENV APP_NAME ngtd
 
-ENV NGT_VERSION 1.6.1
+ENV NGT_VERSION 1.7.0
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV INITRD No
