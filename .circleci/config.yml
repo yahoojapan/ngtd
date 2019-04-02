@@ -62,6 +62,7 @@ jobs:
           command: |
             # env DOCKER_BUILDKIT=1 docker build -t ${REPO_NAME}/${IMAGE_NAME}:latest .
             docker build -t ${REPO_NAME}/${IMAGE_NAME}:latest .
+          no_output_timeout: 1h
       - run:
           name: save image
           command: |

@@ -7,7 +7,7 @@ ENV NGT_VERSION 1.7.0
 ENV DEBIAN_FRONTEND noninteractive
 ENV INITRD No
 ENV LANG ja_JP.UTF-8
-ENV GOVERSION 1.11.5
+ENV GOVERSION 1.12.1
 ENV GOROOT /opt/go
 ENV GOPATH /go
 
@@ -41,7 +41,7 @@ RUN CGO_ENABLED=1 \
     GOARCH=$(go env GOARCH) \
     GO111MODULE=on \
     go build --ldflags '-s -w -linkmode "external" -extldflags "-static -fPIC -m64 -pthread -fopenmp -std=c++17 -lstdc++ -lm"' -a -tags "cgo netgo" -installsuffix "cgo netgo" -o ${APP_NAME} \
-    && upx -9 -o /usr/bin/${APP_NAME} ${APP_NAME}
+    && upx --best --ultra-brute -o /usr/bin/${APP_NAME} ${APP_NAME}
 
 # Start From Scratch For Running Environment
 FROM scratch
