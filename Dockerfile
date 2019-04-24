@@ -2,7 +2,7 @@ FROM ubuntu:latest AS builder
 
 ENV APP_NAME ngtd
 
-ENV NGT_VERSION 1.7.0
+ENV NGT_VERSION 1.7.1
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV INITRD No
@@ -41,6 +41,7 @@ RUN CGO_ENABLED=1 \
     GOARCH=$(go env GOARCH) \
     GO111MODULE=on \
     go build --ldflags '-s -w -linkmode "external" -extldflags "-static -fPIC -m64 -pthread -fopenmp -std=c++17 -lstdc++ -lm"' -a -tags "cgo netgo" -installsuffix "cgo netgo" -o ${APP_NAME} \
+    # && upx -9 -o /usr/bin/${APP_NAME} ${APP_NAME}
     && upx --best --ultra-brute -o /usr/bin/${APP_NAME} ${APP_NAME}
 
 # Start From Scratch For Running Environment

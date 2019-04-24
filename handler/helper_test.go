@@ -18,7 +18,7 @@ package handler
 
 import (
 	"testing"
-	
+
 	"github.com/yahoojapan/ngtd/ngtdtest"
 	"github.com/yahoojapan/ngtd/service"
 )
@@ -30,4 +30,3 @@ func SetupWithTeardown(t *testing.T) func() {
 		ngtdtest.DeleteDB(t)
 	}
 }
-
