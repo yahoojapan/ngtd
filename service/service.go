@@ -17,6 +17,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"sync"
 
@@ -123,6 +124,10 @@ func Insert(vector []float64, id []byte) error {
 }
 
 func (s *Service) Insert(vector []float64, id []byte) error {
+	i, _ := s.db.GetVal(id)
+	if i != 0 {
+		return errors.New("ID already exists")
+	}
 	in, err := gongt.StrictInsert(vector)
 	if err != nil {
 		return err

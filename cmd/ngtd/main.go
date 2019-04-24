@@ -17,14 +17,12 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"os"
 	"runtime"
 	"time"
 
 	"github.com/kpango/glg"
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/yahoojapan/gongt"
 	"github.com/yahoojapan/ngtd"
 	"github.com/yahoojapan/ngtd/cmd/ngtd/build"
@@ -79,13 +77,13 @@ func main() {
 			cli.StringFlag{
 				Name:        "database-type, t",
 				Value:       "",
-				Usage:       "ngtd inner kvs type(redis, golevel, bolt or sqlite)",
+				Usage:       "ngtd inner kvs type(redis, golevel, bolt)",
 				Destination: &dbType,
 			},
 			cli.StringFlag{
 				Name:  "database-path, p",
 				Value: "/usr/share/ngtd/db/kvs.db",
-				Usage: "ngtd inner kvs path(for golevel, bolt and sqlite)",
+				Usage: "ngtd inner kvs path(for golevel, bolt)",
 			},
 			cli.StringFlag{
 				Name:  "redis-host",
@@ -142,12 +140,6 @@ func main() {
 			return kvs.NewBoltDB(p)
 		case "golevel":
 			return kvs.NewGoLevel(p)
-		case "sqlite":
-			s, err := sql.Open("sqlite3", p)
-			if err != nil {
-				return nil, err
-			}
-			return kvs.NewSQL(s)
 		default:
 			return nil, fmt.Errorf("unsupported database type: %v", dbType)
 		}
