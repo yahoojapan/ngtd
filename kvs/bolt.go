@@ -99,7 +99,7 @@ func (b *BoltDB) GetVal(key []byte) (uint, error) {
 }
 
 func (b *BoltDB) set(boltBucketName, key, val []byte) error {
-	return b.db.Update(func(tx *bolt.Tx) error {
+	return b.db.Batch(func(tx *bolt.Tx) error {
 		bucket, err := tx.CreateBucketIfNotExists(boltBucketName)
 		if err != nil {
 			return errors.New("Create BoltDB Bucket Failed")
